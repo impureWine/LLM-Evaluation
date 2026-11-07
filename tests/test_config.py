@@ -14,8 +14,12 @@ class ModelRegistryTests(unittest.TestCase):
         self.assertGreaterEqual(len(specs), 2)
         self.assertEqual(len({spec.model_id for spec in specs}), len(specs))
         self.assertEqual(
-            {"deepseek-flash", "deepseek-v4-pro"},
+            {"glm-4.7-flash", "glm-4.7"},
             {spec.model_id for spec in specs},
+        )
+        self.assertEqual(
+            ["glm-4.7-flash"],
+            [spec.model_id for spec in registry.enabled()],
         )
 
     def test_shared_generation_parameters_are_applied(self):
@@ -24,6 +28,10 @@ class ModelRegistryTests(unittest.TestCase):
             self.assertEqual(0.0, spec.parameters["temperature"])
             self.assertEqual(1.0, spec.parameters["top_p"])
             self.assertEqual(4096, spec.parameters["max_tokens"])
+            self.assertEqual(
+                {"type": "disabled"},
+                spec.parameters["thinking"],
+            )
             self.assertEqual(
                 {"type": "json_object"},
                 spec.parameters["response_format"],

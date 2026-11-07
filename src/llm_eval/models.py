@@ -68,6 +68,7 @@ class ModelSpec:
     api_key_env: str
     timeout_seconds: float
     max_retries: int
+    enabled: bool = True
     parameters: Mapping[str, Any] = field(default_factory=dict)
     notes: str = ""
 
@@ -107,6 +108,7 @@ class ModelSpec:
             api_key_env=str(value["api_key_env"]),
             timeout_seconds=float(value.get("timeout_seconds", 90)),
             max_retries=int(value.get("max_retries", 2)),
+            enabled=bool(value.get("enabled", True)),
             parameters=parameters,
             notes=str(value.get("notes", "")),
         )
@@ -131,6 +133,9 @@ class ModelRegistry:
 
     def ordered(self) -> List[ModelSpec]:
         return list(self.models.values())
+
+    def enabled(self) -> List[ModelSpec]:
+        return [spec for spec in self.models.values() if spec.enabled]
 
 
 @dataclass(frozen=True)

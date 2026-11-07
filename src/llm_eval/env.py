@@ -9,6 +9,11 @@ from typing import Iterable, Optional
 from llm_eval.errors import ConfigurationError
 
 
+LEGACY_ENV_ALIASES = {
+    "LLM_EVAL_ZHIPU_API_KEY": "LLM_EVAL_DEEPSEEK_API_KEY",
+}
+
+
 def default_env_path() -> Path:
     return Path(__file__).resolve().parents[2] / ".env"
 
@@ -40,6 +45,11 @@ def load_local_env(path: Optional[Path] = None) -> None:
             value = value[1:-1]
         if value and key not in os.environ:
             os.environ[key] = value
+
+    # Preserve the key already entered under the previous provider-specific name.
+    for current_name, legacy_name in LEGACY_ENV_ALIASES.items():
+        if not os.environ.get(current_name) and os.environ.get(legacy_name):
+            os.environ[current_name] = os.environ[legacy_name]
 
 
 def _iter_lines(text: str) -> Iterable[tuple]:

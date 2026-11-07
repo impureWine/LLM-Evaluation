@@ -112,14 +112,14 @@ class OpenAICompatibleClient:
                     request_body,
                     spec.timeout_seconds,
                 )
-            except TransportError:
+            except TransportError as exc:
                 attempt_latencies.append(self._elapsed_ms(attempt_started))
                 if attempt < attempts_allowed:
                     self._sleep(self._backoff_seconds(attempt))
                     continue
                 raise TransportError(
-                    "Request failed after {} attempt(s)".format(attempt)
-                )
+                    "Request failed after {} attempt(s): {}".format(attempt, exc)
+                ) from exc
 
             attempt_latencies.append(self._elapsed_ms(attempt_started))
             if 200 <= response.status < 300:

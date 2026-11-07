@@ -88,6 +88,7 @@ def registry_as_public_dict(registry: ModelRegistry) -> Mapping[str, Any]:
                 "api_key_env": spec.api_key_env,
                 "timeout_seconds": spec.timeout_seconds,
                 "max_retries": spec.max_retries,
+                "enabled": spec.enabled,
                 "parameters": spec.parameters,
                 "notes": spec.notes,
             }

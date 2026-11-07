@@ -19,6 +19,7 @@ class SmokeAssetTests(unittest.TestCase):
 
         registry = load_model_registry()
         self.assertEqual(2, len(registry.ordered()))
+        self.assertEqual(1, len(registry.enabled()))
 
 
 if __name__ == "__main__":

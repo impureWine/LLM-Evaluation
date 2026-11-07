@@ -37,7 +37,7 @@ def run_smoke(
     if model_keys:
         specs = [registry.get(key) for key in model_keys]
     else:
-        specs = registry.ordered()
+        specs = registry.enabled()
 
     prompt_bundle = PromptBundle.from_directory()
     source = case_path or (project_root() / "examples" / "smoke_case.json")
@@ -172,7 +172,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             json.dumps(
                 {
                     "status": "dry-run-ok",
-                    "models": [spec.model_id for spec in registry.ordered()],
+                    "models": [spec.model_id for spec in registry.enabled()],
                     "prompt_version": bundle.version,
                     "prompt_fingerprint": bundle.fingerprint,
                     "rendered_messages": len(messages),
