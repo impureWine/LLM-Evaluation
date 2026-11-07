@@ -15,15 +15,15 @@
   "models": [
     {
       "key": "deepseek_flash",
-      "display_name": "DeepSeek Flash",
+      "display_name": "DeepSeek Flash (V4.1-1017)",
       "role": "通用快速模型",
       "model_id": "deepseek-flash",
       "provider": "openai_compatible",
       "endpoint": "https://api.deepseek.com/chat/completions",
-      "api_key_env": "DEEPSEEK_API_KEY",
+      "api_key_env": "LLM_EVAL_DEEPSEEK_API_KEY",
       "timeout_seconds": 90,
       "max_retries": 2,
-      "notes": "GET /models advertised this id on 2026-11-07; /chat/completions echoed the same id."
+      "notes": "Official API name is deepseek-flash. On 2026-11-07 the official docs state it is served by DeepSeek-V4.1-Flash-1017; no exact 4.7 Flash API id was listed."
     },
     {
       "key": "deepseek_v4_pro",
@@ -32,7 +32,7 @@
       "model_id": "deepseek-v4-pro",
       "provider": "openai_compatible",
       "endpoint": "https://api.deepseek.com/chat/completions",
-      "api_key_env": "DEEPSEEK_API_KEY",
+      "api_key_env": "LLM_EVAL_DEEPSEEK_API_KEY",
       "timeout_seconds": 90,
       "max_retries": 2,
       "notes": "GET /models advertised this id on 2026-11-07; /chat/completions echoed the same id."

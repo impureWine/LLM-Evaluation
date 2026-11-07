@@ -11,6 +11,7 @@ from typing import Any, Callable, Dict, Iterable, Mapping, Optional
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
+from llm_eval.env import load_local_env
 from llm_eval.errors import (
     AuthenticationConfigurationError,
     InvalidModelResponse,
@@ -77,6 +78,7 @@ class OpenAICompatibleClient:
         if spec.provider != "openai_compatible":
             raise ModelAPIError("Unsupported provider: {}".format(spec.provider))
 
+        load_local_env()
         api_key = os.environ.get(spec.api_key_env, "").strip()
         if not api_key:
             raise AuthenticationConfigurationError(

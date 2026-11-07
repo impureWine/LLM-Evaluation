@@ -18,10 +18,13 @@
 py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -e .
-$env:DEEPSEEK_API_KEY = "你的密钥"
+Copy-Item .env.example .env
+notepad .env
 ```
 
-密钥只从环境变量读取，不要把真实密钥写入配置文件或提交到仓库。
+在 `.env` 中填写 `LLM_EVAL_DEEPSEEK_API_KEY=新密钥`。`.env` 已被 Git 忽略，
+不要把它提交到仓库。程序会优先使用当前终端进程已有的同名环境变量；若没有，再读取本地
+`.env`。使用项目专用变量名可以避免误用你个人账户里的 `DEEPSEEK_API_KEY`。
 
 ## 测试
 
@@ -47,6 +50,10 @@ python -m llm_eval.smoke --out evidence/model-smoke-2026-11-07.json
 
 该脚本使用 `examples/smoke_case.json` 的教学模拟车型库，只验证模型标识、鉴权、多轮上下文入口、
 JSON 模式、Schema 校验和纠正重试链路，不计入正式实验。
+
+当前 DeepSeek 官方 API 的 Flash 模型标识是 `deepseek-flash`。2026-11-07 的官方文档说明它由
+`DeepSeek-V4.1-Flash-1017` 提供服务，文档没有列出名为“4.7 Flash”的精确模型 ID。若新密钥来自
+其他平台，或该平台明确提供 4.7 Flash，需要同时补充平台 `base_url` 和 `/models` 返回的精确 ID。
 
 ## 程群交付材料
 

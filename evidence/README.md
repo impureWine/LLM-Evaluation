@@ -11,3 +11,6 @@
 该文件保存请求模型、服务端回显模型、`finish_reason`、token 用量、延迟、重试次数、
 提示词指纹以及模型最终回复。API Key 未写入文件。
 
+该历史证据生成时项目读取的是 `DEEPSEEK_API_KEY`。之后已将当前配置隔离为
+`LLM_EVAL_DEEPSEEK_API_KEY`，历史证据保持原样以保持审计真实性。
+

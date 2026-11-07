@@ -18,7 +18,7 @@
 
 | 配置键 | 精确模型标识 | 角色定位 | 服务端回显 |
 | --- | --- | --- | --- |
-| `deepseek_flash` | `deepseek-flash` | 通用快速模型 | `deepseek-flash` |
+| `deepseek_flash` | `deepseek-flash` | 通用快速模型（官方当前由 V4.1-1017 提供） | `deepseek-flash` |
 | `deepseek_v4_pro` | `deepseek-v4-pro` | 高阶能力模型 | `deepseek-v4-pro` |
 
 平台为 DeepSeek API。2026-11-07 通过 `GET https://api.deepseek.com/models`
@@ -27,6 +27,11 @@
 
 没有使用本地 Codex 配置中的 `deepseek-v4-flash` 别名作为正式模型标识。正式记录以服务端接受并
 回显的 `deepseek-flash` 和 `deepseek-v4-pro` 为准。
+
+DeepSeek 官方文档在 2026-11-07 说明 `deepseek-flash` 当前由
+`DeepSeek-V4.1-Flash-1017` 提供服务，并明确列出精确模型标识为 `deepseek-flash`。
+官方页面没有发布名为“4.7 Flash”的 API 标识，因此项目不能自行猜测为
+`deepseek-v4.7-flash`。更换平台或模型时，必须用新密钥请求该平台的 `/models`，记录完整返回值。
 
 ## 3. 统一生成参数
 
@@ -152,8 +157,9 @@ for spec in registry.ordered():
 
 ## 9. 密钥与公开材料
 
-- 真实密钥只从 `DEEPSEEK_API_KEY` 环境变量读取。
-- `.env` 已加入 `.gitignore`，仓库只保留空的 `.env.example`。
+- 真实密钥从项目专用环境变量 `LLM_EVAL_DEEPSEEK_API_KEY` 读取。
+- 程序支持读取本地 `.env`，但不会覆盖当前终端进程已有的同名环境变量。
+- `.env` 已加入 `.gitignore`；仓库配置和公开证据不包含该变量的值。
 - 配置文件加载时若检测到形似 `sk-...` 的凭据会直接报错。
 - 提交前已检查 `evidence/`、`configs/`、`prompts/` 和 `src/`，未发现凭据值。
 
