@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "turn_summary",
+    "effective_constraints",
+    "candidate_cars",
+    "final_recommendation",
+    "next_question",
+    "confidence",
+    "status",
+    "assumptions"
+  ],
+  "properties": {
+    "turn_summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "effective_constraints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "value",
+          "source_turn",
+          "status"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "source_turn": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "superseded"
+            ]
+          }
+        }
+      }
+    },
+    "candidate_cars": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "model",
+          "trim",
+          "year",
+          "price_wan",
+          "meets_constraints",
+          "why_fit",
+          "risks",
+          "evidence_ids"
+        ],
+        "properties": {
+          "model": {
+            "type": "string"
+          },
+          "trim": {
+            "type": "string"
+          },
+          "year": {
+            "type": "integer"
+          },
+          "price_wan": {
+            "type": "number"
+          },
+          "meets_constraints": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "why_fit": {
+            "type": "string"
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "final_recommendation": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "model",
+            "trim",
+            "year",
+            "reason",
+            "tradeoffs"
+          ],
+          "properties": {
+            "model": {
+              "type": "string"
+            },
+            "trim": {
+              "type": "string"
+            },
+            "year": {
+              "type": "integer"
+            },
+            "reason": {
+              "type": "string"
+            },
+            "tradeoffs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "next_question": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "candidate_only",
+        "final"
+      ]
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
+

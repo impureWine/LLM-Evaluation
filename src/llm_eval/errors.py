@@ -29,3 +29,14 @@ class ModelAPIError(LLMEvaluationError):
 class InvalidModelResponse(LLMEvaluationError):
     """The provider returned JSON that does not match the chat contract."""
 
+
+class DecisionOutputValidationError(LLMEvaluationError):
+    """A model answer is not valid JSON or violates the decision-output schema."""
+
+    def __init__(self, issues):
+        self.issues = tuple(issues)
+        message = "Decision output failed validation: {}".format(
+            "; ".join(str(issue) for issue in self.issues)
+        )
+        super().__init__(message)
+

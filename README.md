@@ -38,3 +38,12 @@ python -m unittest discover -s tests -v
 - `docs/`：接入记录、方案比较和博客材料。
 - `tests/`：不消耗 API 额度的自动测试。
 
+## 统一提示词
+
+`PromptBundle.from_directory()` 会读取版本化提示词和
+`prompts/output_schema_v1.json`，生成 SHA-256 指纹。正式实验应把该指纹写入每次运行记录，
+以证明两个模型使用同一测试条件。
+
+`SchemaValidatedDecisionClient` 在模型返回后执行 JSON 解析和关键字段校验；失败时最多追加一次
+统一的纠正消息。首次输出和纠正输出都会保留在结果审计记录中。
+
