@@ -30,6 +30,31 @@ $env:PYTHONPATH = "src"
 python -m unittest discover -s tests -v
 ```
 
+## 双模型连通性冒烟测试
+
+先做不消耗额度的本地检查：
+
+```powershell
+$env:PYTHONPATH = "src"
+python -m llm_eval.smoke --dry-run
+```
+
+再调用两个模型各一次：
+
+```powershell
+python -m llm_eval.smoke --out evidence/model-smoke-2026-11-07.json
+```
+
+该脚本使用 `examples/smoke_case.json` 的教学模拟车型库，只验证模型标识、鉴权、多轮上下文入口、
+JSON 模式、Schema 校验和纠正重试链路，不计入正式实验。
+
+## 程群交付材料
+
+- [模型接入与统一配置说明](docs/model-access-and-configuration.md)
+- [技术改进与备选方案比较](docs/technical-improvement.md)
+- [博客初稿](docs/chengqun-blog-draft.md)
+- [双模型实际接入证据](evidence/README.md)
+
 ## 目录
 
 - `configs/`：版本化模型配置与共享参数。
