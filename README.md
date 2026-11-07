@@ -81,3 +81,8 @@ JSON 模式、Schema 校验和纠正重试链路，不计入正式实验。
 `SchemaValidatedDecisionClient` 在模型返回后执行 JSON 解析和关键字段校验；失败时最多追加一次
 统一的纠正消息。首次输出和纠正输出都会保留在结果审计记录中。
 
+
+## 张王昊交付材料
+
+- [分工进度、验收清单与提交记录](docs/evaluation-coordination.md)
+- [博客整合稿、开发时间估计与模型选型建议](docs/evaluation-blog.md)
