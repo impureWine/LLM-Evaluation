@@ -1,0 +1,246 @@
+{
+  "record_type": "model_connectivity_smoke_test",
+  "formal_evaluation": false,
+  "case_id": "smoke-city-commute-01",
+  "started_at": "2026-11-07T04:00:10.790616+00:00",
+  "finished_at": "2026-11-07T04:01:40.080308+00:00",
+  "platform": "Zhipu BigModel",
+  "registry_recorded_on": "2026-11-07",
+  "prompt_version": "v1",
+  "prompt_fingerprint": "4ffc5f7ddcac9c3aa1e03a1f33ddb9931418d93c418c573113f0c8bcf4acd811",
+  "case_path": "examples\\smoke_case.json",
+  "model_registry": {
+    "platform": "Zhipu BigModel",
+    "recorded_on": "2026-11-07",
+    "shared_parameters": {
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 4096,
+      "stream": false,
+      "thinking": {
+        "type": "disabled"
+      },
+      "response_format": {
+        "type": "json_object"
+      }
+    },
+    "models": [
+      {
+        "key": "zhipu_glm_47_flash",
+        "display_name": "Zhipu GLM-4.7-Flash",
+        "role": "轻量快速模型",
+        "model_id": "glm-4.7-flash",
+        "provider": "openai_compatible",
+        "endpoint": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+        "api_key_env": "LLM_EVAL_ZHIPU_API_KEY",
+        "timeout_seconds": 180.0,
+        "max_retries": 1,
+        "enabled": true,
+        "parameters": {
+          "temperature": 0.0,
+          "top_p": 1.0,
+          "max_tokens": 4096,
+          "stream": false,
+          "thinking": {
+            "type": "disabled"
+          },
+          "response_format": {
+            "type": "json_object"
+          }
+        },
+        "notes": "Verified on 2026-11-07: /chat/completions returned HTTP 200 and echoed model id glm-4.7-flash. thinking=disabled returned a finished answer in about 16.8 seconds. The account model-list endpoint did not enumerate this model, so direct chat verification is recorded."
+      },
+      {
+        "key": "zhipu_glm_47",
+        "display_name": "Zhipu GLM-4.7",
+        "role": "能力对照模型（默认禁用，启用前确认额度）",
+        "model_id": "glm-4.7",
+        "provider": "openai_compatible",
+        "endpoint": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+        "api_key_env": "LLM_EVAL_ZHIPU_API_KEY",
+        "timeout_seconds": 180.0,
+        "max_retries": 1,
+        "enabled": false,
+        "parameters": {
+          "temperature": 0.0,
+          "top_p": 1.0,
+          "max_tokens": 4096,
+          "stream": false,
+          "thinking": {
+            "type": "disabled"
+          },
+          "response_format": {
+            "type": "json_object"
+          }
+        },
+        "notes": "Listed by the account /models endpoint on 2026-11-07. Disabled to avoid unapproved paid generation; enable only after confirming quota and team approval."
+      }
+    ]
+  },
+  "models": [
+    {
+      "model_key": "zhipu_glm_47_flash",
+      "requested_model": "glm-4.7-flash",
+      "served_model": "glm-4.7-flash",
+      "valid": true,
+      "validation_issues": [],
+      "correction_attempts": 0,
+      "prompt_fingerprint": "4ffc5f7ddcac9c3aa1e03a1f33ddb9931418d93c418c573113f0c8bcf4acd811",
+      "total_usage": {
+        "prompt_tokens": 1773,
+        "completion_tokens": 683,
+        "total_tokens": 2456
+      },
+      "total_latency_ms": 89282,
+      "final_response": {
+        "model_key": "zhipu_glm_47_flash",
+        "requested_model": "glm-4.7-flash",
+        "served_model": "glm-4.7-flash",
+        "content": "{\"turn_summary\":\"已根据用户提供的预算、用途、能源形式、辅助驾驶及座位数等硬性约束，从固定车型库中筛选出2款候选车型。由于候选车型数量较少且价格区间较窄，暂无法形成具有明显取舍的最终推荐，需进一步确认用户对能源形式或具体配置的偏好。\",\"effective_constraints\":[{\"name\":\"预算\",\"value\":\"不超过20万元\",\"source_turn\":1,\"status\":\"active\"},{\"name\":\"用途\",\"value\":\"城市通勤\",\"source_turn\":1,\"status\":\"active\"},{\"name\":\"能源形式\",\"value\":\"纯电或插电混动\",\"source_turn\":1,\"status\":\"active\"},{\"name\":\"辅助驾驶\",\"value\":\"L2级辅助驾驶\",\"source_turn\":1,\"status\":\"active\"},{\"name\":\"座位数\",\"value\":\"至少5座\",\"source_turn\":1,\"status\":\"active\"}],\"candidate_cars\":[{\"model\":\"示例紧凑型轿车A\",\"trim\":\"智驾版\",\"year\":2026,\"price_wan\":18.8,\"meets_constraints\":[\"预算\",\"能源形式\",\"辅助驾驶\",\"座位数\"],\"why_fit\":\"价格18.8万元符合预算上限；纯电形式适合城市通勤；L2级智驾满足辅助驾驶需求；5座满足座位数要求。\",\"risks\":[\"纯电车型在长途通勤时需关注充电便利性；\"],\"evidence_ids\":[\"smoke-car-001\"]},{\"model\":\"示例紧凑型SUV B\",\"trim\":\"舒适版\",\"year\":2026,\"price_wan\":17.6,\"meets_constraints\":[\"预算\",\"能源形式\",\"辅助驾驶\",\"座位数\"],\"why_fit\":\"价格17.6万元符合预算；插电混动形式兼顾城市通勤与长途出行；L2级辅助驾驶满足需求；5座满足座位数要求。\",\"risks\":[\"插电混动车型需关注充电设施及保养成本；\"],\"evidence_ids\":[\"smoke-car-002\"]}],\"final_recommendation\":null,\"next_question\":\"您更倾向于纯电车型（A）还是插电混动车型（B）？或者您对车辆的续航里程有特殊要求吗？\",\"confidence\":\"medium\",\"status\":\"candidate_only\",\"assumptions\":[\"用户对预算上限20万元的接受度较高，且能接受该预算范围内的车型。\",\"用户对车辆的具体品牌或外观偏好无特殊要求。\"]}",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 1773,
+          "completion_tokens": 683,
+          "total_tokens": 2456
+        },
+        "latency_ms": 89282,
+        "attempts": 1,
+        "response_id": "20261107120009d7a6b931cc564920",
+        "reasoning_present": false,
+        "attempt_latencies_ms": [
+          89282
+        ]
+      },
+      "attempts": [
+        {
+          "model_key": "zhipu_glm_47_flash",
+          "requested_model": "glm-4.7-flash",
+          "served_model": "glm-4.7-flash",
+          "content": "{\"turn_summary\":\"已根据用户提供的预算、用途、能源形式、辅助驾驶及座位数等硬性约束，从固定车型库中筛选出2款候选车型。由于候选车型数量较少且价格区间较窄，暂无法形成具有明显取舍的最终推荐，需进一步确认用户对能源形式或具体配置的偏好。\",\"effective_constraints\":[{\"name\":\"预算\",\"value\":\"不超过20万元\",\"source_turn\":1,\"status\":\"active\"},{\"name\":\"用途\",\"value\":\"城市通勤\",\"source_turn\":1,\"status\":\"active\"},{\"name\":\"能源形式\",\"value\":\"纯电或插电混动\",\"source_turn\":1,\"status\":\"active\"},{\"name\":\"辅助驾驶\",\"value\":\"L2级辅助驾驶\",\"source_turn\":1,\"status\":\"active\"},{\"name\":\"座位数\",\"value\":\"至少5座\",\"source_turn\":1,\"status\":\"active\"}],\"candidate_cars\":[{\"model\":\"示例紧凑型轿车A\",\"trim\":\"智驾版\",\"year\":2026,\"price_wan\":18.8,\"meets_constraints\":[\"预算\",\"能源形式\",\"辅助驾驶\",\"座位数\"],\"why_fit\":\"价格18.8万元符合预算上限；纯电形式适合城市通勤；L2级智驾满足辅助驾驶需求；5座满足座位数要求。\",\"risks\":[\"纯电车型在长途通勤时需关注充电便利性；\"],\"evidence_ids\":[\"smoke-car-001\"]},{\"model\":\"示例紧凑型SUV B\",\"trim\":\"舒适版\",\"year\":2026,\"price_wan\":17.6,\"meets_constraints\":[\"预算\",\"能源形式\",\"辅助驾驶\",\"座位数\"],\"why_fit\":\"价格17.6万元符合预算；插电混动形式兼顾城市通勤与长途出行；L2级辅助驾驶满足需求；5座满足座位数要求。\",\"risks\":[\"插电混动车型需关注充电设施及保养成本；\"],\"evidence_ids\":[\"smoke-car-002\"]}],\"final_recommendation\":null,\"next_question\":\"您更倾向于纯电车型（A）还是插电混动车型（B）？或者您对车辆的续航里程有特殊要求吗？\",\"confidence\":\"medium\",\"status\":\"candidate_only\",\"assumptions\":[\"用户对预算上限20万元的接受度较高，且能接受该预算范围内的车型。\",\"用户对车辆的具体品牌或外观偏好无特殊要求。\"]}",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 1773,
+            "completion_tokens": 683,
+            "total_tokens": 2456
+          },
+          "latency_ms": 89282,
+          "attempts": 1,
+          "response_id": "20261107120009d7a6b931cc564920",
+          "reasoning_present": false,
+          "attempt_latencies_ms": [
+            89282
+          ]
+        }
+      ],
+      "parsed_output": {
+        "turn_summary": "已根据用户提供的预算、用途、能源形式、辅助驾驶及座位数等硬性约束，从固定车型库中筛选出2款候选车型。由于候选车型数量较少且价格区间较窄，暂无法形成具有明显取舍的最终推荐，需进一步确认用户对能源形式或具体配置的偏好。",
+        "effective_constraints": [
+          {
+            "name": "预算",
+            "value": "不超过20万元",
+            "source_turn": 1,
+            "status": "active"
+          },
+          {
+            "name": "用途",
+            "value": "城市通勤",
+            "source_turn": 1,
+            "status": "active"
+          },
+          {
+            "name": "能源形式",
+            "value": "纯电或插电混动",
+            "source_turn": 1,
+            "status": "active"
+          },
+          {
+            "name": "辅助驾驶",
+            "value": "L2级辅助驾驶",
+            "source_turn": 1,
+            "status": "active"
+          },
+          {
+            "name": "座位数",
+            "value": "至少5座",
+            "source_turn": 1,
+            "status": "active"
+          }
+        ],
+        "candidate_cars": [
+          {
+            "model": "示例紧凑型轿车A",
+            "trim": "智驾版",
+            "year": 2026,
+            "price_wan": 18.8,
+            "meets_constraints": [
+              "预算",
+              "能源形式",
+              "辅助驾驶",
+              "座位数"
+            ],
+            "why_fit": "价格18.8万元符合预算上限；纯电形式适合城市通勤；L2级智驾满足辅助驾驶需求；5座满足座位数要求。",
+            "risks": [
+              "纯电车型在长途通勤时需关注充电便利性；"
+            ],
+            "evidence_ids": [
+              "smoke-car-001"
+            ]
+          },
+          {
+            "model": "示例紧凑型SUV B",
+            "trim": "舒适版",
+            "year": 2026,
+            "price_wan": 17.6,
+            "meets_constraints": [
+              "预算",
+              "能源形式",
+              "辅助驾驶",
+              "座位数"
+            ],
+            "why_fit": "价格17.6万元符合预算；插电混动形式兼顾城市通勤与长途出行；L2级辅助驾驶满足需求；5座满足座位数要求。",
+            "risks": [
+              "插电混动车型需关注充电设施及保养成本；"
+            ],
+            "evidence_ids": [
+              "smoke-car-002"
+            ]
+          }
+        ],
+        "final_recommendation": null,
+        "next_question": "您更倾向于纯电车型（A）还是插电混动车型（B）？或者您对车辆的续航里程有特殊要求吗？",
+        "confidence": "medium",
+        "status": "candidate_only",
+        "assumptions": [
+          "用户对预算上限20万元的接受度较高，且能接受该预算范围内的车型。",
+          "用户对车辆的具体品牌或外观偏好无特殊要求。"
+        ]
+      },
+      "role": "轻量快速模型",
+      "configured_model_id": "glm-4.7-flash",
+      "parameters": {
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 4096,
+        "stream": false,
+        "thinking": {
+          "type": "disabled"
+        },
+        "response_format": {
+          "type": "json_object"
+        }
+      }
+    }
+  ],
+  "summary": [
+    {
+      "model_key": "zhipu_glm_47_flash",
+      "requested_model": "glm-4.7-flash",
+      "served_model": "glm-4.7-flash",
+      "valid": true,
+      "finish_reason": "stop",
+      "total_tokens": 2456,
+      "latency_ms": 89282,
+      "correction_attempts": 0
+    }
+  ]
+}

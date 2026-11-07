@@ -12,26 +12,24 @@
 6. 提供稳定接口供自动化测试、解析和汇总模块复用。
 
 对应代码位于 `src/llm_eval/`，提示词位于 `prompts/`，模型配置位于
-`configs/models.json`，接入证据位于 `evidence/model-smoke-2026-11-07.json`。
+`configs/models.json`，当前智谱接入证据位于
+`evidence/zhipu-glm-4.7-flash-smoke-success-2026-11-07.json`。
 
 ## 2. 被测模型
 
 | 配置键 | 精确模型标识 | 角色定位 | 服务端回显 |
 | --- | --- | --- | --- |
-| `deepseek_flash` | `deepseek-flash` | 通用快速模型（官方当前由 V4.1-1017 提供） | `deepseek-flash` |
-| `deepseek_v4_pro` | `deepseek-v4-pro` | 高阶能力模型 | `deepseek-v4-pro` |
+| `zhipu_glm_47_flash` | `glm-4.7-flash` | 轻量快速模型 | `glm-4.7-flash` |
+| `zhipu_glm_47` | `glm-4.7` | 能力对照模型，默认禁用 | `glm-4.7` |
 
-平台为 DeepSeek API。2026-11-07 通过 `GET https://api.deepseek.com/models`
-确认两个模型标识均被平台发布，并通过两次真实的 `/chat/completions` 请求确认服务端分别回显了
-上述精确标识。这里使用的是两个不同模型，不是同一模型的温度、提示词或参数变体。
+平台为智谱 BigModel，接口为 OpenAI-compatible 的
+`https://open.bigmodel.cn/api/paas/v4/chat/completions`。2026-11-07 使用项目专用密钥测试
+`glm-4.7-flash`，服务端返回 HTTP 200 并回显相同模型 ID。该账号的 `/models` 接口列出
+`glm-4.7`、`glm-5.3-flash` 等模型，但没有枚举 `glm-4.7-flash`；因此接入依据以直接聊天请求
+的服务端回显为准。
 
-没有使用本地 Codex 配置中的 `deepseek-v4-flash` 别名作为正式模型标识。正式记录以服务端接受并
-回显的 `deepseek-flash` 和 `deepseek-v4-pro` 为准。
-
-DeepSeek 官方文档在 2026-11-07 说明 `deepseek-flash` 当前由
-`DeepSeek-V4.1-Flash-1017` 提供服务，并明确列出精确模型标识为 `deepseek-flash`。
-官方页面没有发布名为“4.7 Flash”的 API 标识，因此项目不能自行猜测为
-`deepseek-v4.7-flash`。更换平台或模型时，必须用新密钥请求该平台的 `/models`，记录完整返回值。
+`glm-4.7` 是同一平台上的能力对照候选，但默认禁用。启用前必须确认其额度、价格和团队授权，
+避免未经同意产生费用。
 
 ## 3. 统一生成参数
 
@@ -43,29 +41,37 @@ DeepSeek 官方文档在 2026-11-07 说明 `deepseek-flash` 当前由
 | `top_p` | `1.0` | 不额外截断候选词分布 |
 | `max_tokens` | `4096` | 给推理内容和完整 JSON 留足空间 |
 | `stream` | `false` | 简化原始记录和超时处理 |
+| `thinking.type` | `disabled` | 智谱 4.7 系列按轮关闭思考，降低完整任务时延 |
 | `response_format` | `{"type": "json_object"}` | 启用平台 JSON 输出模式 |
 
 说明：`max_tokens` 是输出上限而不是实际计费量。试调用发现推理类输出会先占用内部推理 token，
 若上限过小会出现 `finish_reason=length` 且最终 JSON 为空，因此统一提高到 4096。
+智谱 4.7 系列支持按轮关闭思考模式；关闭后冒烟短请求约 16.8 秒完成，而启用思考时完整请求超过
+90 秒。为控制等待和重试成本，当前两个候选模型统一设置 `thinking.type=disabled`。
 
 ## 4. 实际接入证据
 
 2026-11-07 使用同一提示词指纹
 `4ffc5f7ddcac9c3aa1e03a1f33ddb9931418d93c418c573113f0c8bcf4acd811`
-对两个模型各执行一次非正式冒烟任务：
+执行智谱 `glm-4.7-flash` 非正式冒烟任务：
 
 | 模型 | 输出校验 | `finish_reason` | 总 token | 端到端延迟 | 纠正次数 |
 | --- | --- | --- | ---: | ---: | ---: |
-| `deepseek-flash` | 通过 | `stop` | 3521 | 12.500 s | 0 |
-| `deepseek-v4-pro` | 通过 | `stop` | 4468 | 31.938 s | 0 |
+| `glm-4.7-flash` | 通过 | `stop` | 2456 | 89.282 s | 0 |
 
-本次任务只有一个样本，延迟和 token 只证明链路可用，不能据此判断稳定均值、性价比或最终排名。
-正式结论必须使用团队规定的 18 次完整多轮运行及统一评分规则。
+在关闭思考模式前，完整请求曾连续超时，失败记录保存在
+`evidence/zhipu-glm-4.7-flash-smoke-2026-11-07.json`。设置 `thinking.type=disabled` 后，
+完整请求成功并由服务端回显 `glm-4.7-flash`。本次只有一个成功样本，延迟和 token 只证明链路
+可用，不能据此判断稳定均值、性价比或最终排名。正式结论必须使用团队规定的完整多轮运行及
+统一评分规则。
 
-在冒烟场景中，两个模型都能从给定车型库排除超预算的第三辆车，并引用真实存在的 `source_id`。
-它们对最终推荐存在差异：`deepseek-flash` 推荐纯电紧凑型轿车 A，
-`deepseek-v4-pro` 推荐插电混动紧凑型 SUV B，并额外考虑充电条件不明确时的补能灵活性。
-该差异可作为后续正式评测中“推荐理由是否覆盖用户风险”的观察点，但两者均不代表真实市场车型。
+在当前冒烟场景中，模型从给定车型库筛出紧凑型轿车 A 和 SUV B，并引用存在的 `source_id`；
+它选择继续追问而非立即推荐。值得注意的是，`next_question` 字符串实际包含两个并列问题，
+虽然字段本身通过 Schema，但不满足“最多一个问题”的语义要求。该案例应交给关欣纳入指令遵循
+或边界案例分析，不能在评分时只检查 JSON 格式。
+
+更早的 DeepSeek 双模型记录保留在 `evidence/model-smoke-2026-11-07.json`，仅作为接入阶段的
+历史证据，不代表当前正式测评对象。
 
 ## 5. API 接入设计
 
@@ -157,7 +163,9 @@ for spec in registry.ordered():
 
 ## 9. 密钥与公开材料
 
-- 真实密钥从项目专用环境变量 `LLM_EVAL_DEEPSEEK_API_KEY` 读取。
+- 真实密钥从项目专用环境变量 `LLM_EVAL_ZHIPU_API_KEY` 读取。
+- 为兼容已经填写的本地配置，加载器只在新变量为空时回退读取旧项目变量
+  `LLM_EVAL_DEEPSEEK_API_KEY`；不会读取个人 `DEEPSEEK_API_KEY`。
 - 程序支持读取本地 `.env`，但不会覆盖当前终端进程已有的同名环境变量。
 - `.env` 已加入 `.gitignore`；仓库配置和公开证据不包含该变量的值。
 - 配置文件加载时若检测到形似 `sk-...` 的凭据会直接报错。
@@ -165,9 +173,9 @@ for spec in registry.ordered():
 
 ## 10. 当前限制
 
-1. 本次冒烟测试只有每个模型一个样本，不能计算成功率、波动或稳定排名。
+1. 当前智谱冒烟测试只有一个成功样本，不能计算成功率、波动或稳定排名。
 2. 正式场景、车型数据和需求变更脚本还未纳入本分支，冒烟车型库不得替代庄剀涵维护的数据集。
-3. DeepSeek 平台支持当前 JSON 模式，但若团队后续引入不支持该参数的其他平台，需在配置和
-   公平性说明中单独记录，不能静默改变条件。
+3. 智谱接口支持当前 JSON 模式；但两个候选模型都启用时仍需重新验证同一参数组合。若团队后续
+   引入不支持该参数的其他平台，需在配置和公平性说明中单独记录，不能静默改变条件。
 4. 工具调用仍是选做项。本接入层没有把工具调用伪装成已完成成果。
 

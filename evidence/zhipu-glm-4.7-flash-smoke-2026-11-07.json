@@ -1,0 +1,92 @@
+{
+  "record_type": "model_connectivity_smoke_test",
+  "formal_evaluation": false,
+  "case_id": "smoke-city-commute-01",
+  "started_at": "2026-11-07T03:57:18.299049+00:00",
+  "finished_at": "2026-11-07T03:58:50.846200+00:00",
+  "platform": "Zhipu BigModel",
+  "registry_recorded_on": "2026-11-07",
+  "prompt_version": "v1",
+  "prompt_fingerprint": "4ffc5f7ddcac9c3aa1e03a1f33ddb9931418d93c418c573113f0c8bcf4acd811",
+  "case_path": "examples\\smoke_case.json",
+  "model_registry": {
+    "platform": "Zhipu BigModel",
+    "recorded_on": "2026-11-07",
+    "shared_parameters": {
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 4096,
+      "stream": false,
+      "response_format": {
+        "type": "json_object"
+      }
+    },
+    "models": [
+      {
+        "key": "zhipu_glm_47_flash",
+        "display_name": "Zhipu GLM-4.7-Flash",
+        "role": "轻量快速模型",
+        "model_id": "glm-4.7-flash",
+        "provider": "openai_compatible",
+        "endpoint": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+        "api_key_env": "LLM_EVAL_ZHIPU_API_KEY",
+        "timeout_seconds": 90.0,
+        "max_retries": 2,
+        "enabled": true,
+        "parameters": {
+          "temperature": 0.0,
+          "top_p": 1.0,
+          "max_tokens": 4096,
+          "stream": false,
+          "response_format": {
+            "type": "json_object"
+          }
+        },
+        "notes": "Verified on 2026-11-07: /chat/completions returned HTTP 200 and echoed model id glm-4.7-flash. The account model-list endpoint did not enumerate it, so direct chat verification is recorded."
+      },
+      {
+        "key": "zhipu_glm_47",
+        "display_name": "Zhipu GLM-4.7",
+        "role": "能力对照模型（默认禁用，启用前确认额度）",
+        "model_id": "glm-4.7",
+        "provider": "openai_compatible",
+        "endpoint": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+        "api_key_env": "LLM_EVAL_ZHIPU_API_KEY",
+        "timeout_seconds": 90.0,
+        "max_retries": 2,
+        "enabled": false,
+        "parameters": {
+          "temperature": 0.0,
+          "top_p": 1.0,
+          "max_tokens": 4096,
+          "stream": false,
+          "response_format": {
+            "type": "json_object"
+          }
+        },
+        "notes": "Listed by the account /models endpoint on 2026-11-07. Disabled to avoid unapproved paid generation; enable only after confirming quota and team approval."
+      }
+    ]
+  },
+  "models": [
+    {
+      "model_key": "zhipu_glm_47_flash",
+      "configured_model_id": "glm-4.7-flash",
+      "valid": false,
+      "error_type": "TransportError",
+      "error": "Request failed after 3 attempt(s)"
+    }
+  ],
+  "summary": [
+    {
+      "model_key": "zhipu_glm_47_flash",
+      "requested_model": null,
+      "served_model": null,
+      "valid": false,
+      "finish_reason": null,
+      "total_tokens": null,
+      "latency_ms": null,
+      "correction_attempts": null
+    }
+  ]
+}
