@@ -1,0 +1,38 @@
+{
+  "version": "v1",
+  "model_keys": ["zhipu_glm_47_flash", "zhipu_glm_47"],
+  "repetitions": 3,
+  "vehicle_data": [
+    {"source_id":"SIM-A","model":"教学车型 A","trim":"通勤版","year":2026,"price_wan":14.8,"energy":"纯电","seats":5,"adas":"L2"},
+    {"source_id":"SIM-B","model":"教学车型 B","trim":"长途版","year":2026,"price_wan":18.6,"energy":"插电混动","seats":5,"adas":"L2"},
+    {"source_id":"SIM-C","model":"教学车型 C","trim":"家庭版","year":2026,"price_wan":22.6,"energy":"插电混动","seats":7,"adas":"L2"},
+    {"source_id":"SIM-D","model":"教学车型 D","trim":"家庭基础版","year":2026,"price_wan":19.6,"energy":"燃油","seats":7,"adas":"L1"},
+    {"source_id":"SIM-E","model":"教学车型 E","trim":"智驾版","year":2026,"price_wan":17.5,"energy":"纯电","seats":5,"adas":"L2"}
+  ],
+  "scenarios": [
+    {
+      "id":"city",
+      "user_request":"城市通勤，预算最高18万元，必须纯电、至少5座。先列出候选。",
+      "second_turn":"仍按原条件，必须具备 L2 辅助驾驶。请更新候选。",
+      "change_rule":"本轮新增 L2，保留预算、能源和座位限制。",
+      "expected_initial":["SIM-A","SIM-E"],
+      "expected_final":["SIM-A","SIM-E"]
+    },
+    {
+      "id":"family",
+      "user_request":"家庭出行，预算最高24万元，至少7座。先列出候选。",
+      "second_turn":"必须是插电混动。请保留预算和座位数要求，更新候选。",
+      "change_rule":"本轮新增插电混动，保留预算和座位限制。",
+      "expected_initial":["SIM-C","SIM-D"],
+      "expected_final":["SIM-C"]
+    },
+    {
+      "id":"change",
+      "user_request":"周末跨城，预算最高24万元，至少5座，必须插电混动。先列出候选。",
+      "second_turn":"预算上限改为19万元，其余要求保留。请更新候选。",
+      "change_rule":"19万元从本轮取代24万元，能源和座位限制仍生效。",
+      "expected_initial":["SIM-B","SIM-C"],
+      "expected_final":["SIM-B"]
+    }
+  ]
+}

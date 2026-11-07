@@ -86,3 +86,7 @@ JSON 模式、Schema 校验和纠正重试链路，不计入正式实验。
 
 - [分工进度、验收清单与提交记录](docs/evaluation-coordination.md)
 - [博客整合稿、开发时间估计与模型选型建议](docs/evaluation-blog.md)
+
+## 四轮评测联调
+
+使用 `python -m llm_eval.evaluate --dry-run` 查看模型、场景、指纹和计划任务数。实际联调、实验冻结与评分参见[评测协议 v1](docs/evaluation-protocol-v1.md)。
