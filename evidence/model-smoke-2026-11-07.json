@@ -1,0 +1,416 @@
+{
+  "record_type": "model_connectivity_smoke_test",
+  "formal_evaluation": false,
+  "case_id": "smoke-city-commute-01",
+  "started_at": "2026-11-07T03:32:41.303101+00:00",
+  "finished_at": "2026-11-07T03:33:25.746290+00:00",
+  "platform": "DeepSeek API",
+  "registry_recorded_on": "2026-11-07",
+  "prompt_version": "v1",
+  "prompt_fingerprint": "4ffc5f7ddcac9c3aa1e03a1f33ddb9931418d93c418c573113f0c8bcf4acd811",
+  "case_path": "examples\\smoke_case.json",
+  "model_registry": {
+    "platform": "DeepSeek API",
+    "recorded_on": "2026-11-07",
+    "shared_parameters": {
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 4096,
+      "stream": false,
+      "response_format": {
+        "type": "json_object"
+      }
+    },
+    "models": [
+      {
+        "key": "deepseek_flash",
+        "display_name": "DeepSeek Flash",
+        "role": "通用快速模型",
+        "model_id": "deepseek-flash",
+        "provider": "openai_compatible",
+        "endpoint": "https://api.deepseek.com/chat/completions",
+        "api_key_env": "DEEPSEEK_API_KEY",
+        "timeout_seconds": 90.0,
+        "max_retries": 2,
+        "parameters": {
+          "temperature": 0.0,
+          "top_p": 1.0,
+          "max_tokens": 4096,
+          "stream": false,
+          "response_format": {
+            "type": "json_object"
+          }
+        },
+        "notes": "GET /models advertised this id on 2026-11-07; /chat/completions echoed the same id."
+      },
+      {
+        "key": "deepseek_v4_pro",
+        "display_name": "DeepSeek V4 Pro",
+        "role": "高阶能力模型",
+        "model_id": "deepseek-v4-pro",
+        "provider": "openai_compatible",
+        "endpoint": "https://api.deepseek.com/chat/completions",
+        "api_key_env": "DEEPSEEK_API_KEY",
+        "timeout_seconds": 90.0,
+        "max_retries": 2,
+        "parameters": {
+          "temperature": 0.0,
+          "top_p": 1.0,
+          "max_tokens": 4096,
+          "stream": false,
+          "response_format": {
+            "type": "json_object"
+          }
+        },
+        "notes": "GET /models advertised this id on 2026-11-07; /chat/completions echoed the same id."
+      }
+    ]
+  },
+  "models": [
+    {
+      "model_key": "deepseek_flash",
+      "requested_model": "deepseek-flash",
+      "served_model": "deepseek-flash",
+      "valid": true,
+      "validation_issues": [],
+      "correction_attempts": 0,
+      "prompt_fingerprint": "4ffc5f7ddcac9c3aa1e03a1f33ddb9931418d93c418c573113f0c8bcf4acd811",
+      "total_usage": {
+        "prompt_tokens": 1795,
+        "completion_tokens": 1726,
+        "total_tokens": 3521
+      },
+      "total_latency_ms": 12500,
+      "final_response": {
+        "model_key": "deepseek_flash",
+        "requested_model": "deepseek-flash",
+        "served_model": "deepseek-flash",
+        "content": "{\"turn_summary\":\"第1轮已提取预算、用途、能源形式、辅助驾驶和座位数约束；车型库中示例紧凑型轿车A与示例紧凑型SUV B均满足硬约束，示例中大型SUV C因价格超过20万元被排除。信息已足够，给出最终推荐。\",\"effective_constraints\":[{\"name\":\"预算上限\",\"value\":\"不超过20万元人民币\",\"source_turn\":1,\"status\":\"active\"},{\"name\":\"主要用途\",\"value\":\"城市通勤\",\"source_turn\":1,\"status\":\"active\"},{\"name\":\"能源形式\",\"value\":\"纯电或插电混动\",\"source_turn\":1,\"status\":\"active\"},{\"name\":\"辅助驾驶\",\"value\":\"必须有L2级辅助驾驶\",\"source_turn\":1,\"status\":\"active\"},{\"name\":\"座位数\",\"value\":\"至少5座\",\"source_turn\":1,\"status\":\"active\"}],\"candidate_cars\":[{\"model\":\"示例紧凑型轿车A\",\"trim\":\"智驾版\",\"year\":2026,\"price_wan\":18.8,\"meets_constraints\":[\"预算不超过20万元：18.8万元\",\"纯电：满足\",\"L2级辅助驾驶：满足\",\"至少5座：5座满足\",\"城市通勤：紧凑型轿车适合\"],\"why_fit\":\"价格18.8万元在预算内，纯电动力适合城市通勤，具备L2级辅助驾驶和5座，续航520km可用于日常通勤。\",\"risks\":[\"纯电车型依赖充电条件，需确认住宅或单位充电便利性\",\"长途出行需规划补能，灵活性不如插电混动\"],\"evidence_ids\":[\"smoke-car-001\"]},{\"model\":\"示例紧凑型SUV B\",\"trim\":\"舒适版\",\"year\":2026,\"price_wan\":17.6,\"meets_constraints\":[\"预算不超过20万元：17.6万元\",\"插电混动：满足\",\"L2级辅助驾驶：满足\",\"至少5座：5座满足\",\"城市通勤：SUV可用于城市通勤\"],\"why_fit\":\"价格17.6万元在预算内，插电混动可兼顾城市通勤与长途补能灵活性，具备L2级辅助驾驶和5座。\",\"risks\":[\"车型库未给出纯电续航，若希望主要用电通勤需进一步核实\",\"插电混动包含两套动力系统，维护复杂度和使用成本需结合充电条件评估\"],\"evidence_ids\":[\"smoke-car-002\"]}],\"final_recommendation\":{\"model\":\"示例紧凑型轿车A\",\"trim\":\"智驾版\",\"year\":2026,\"reason\":\"在满足不超过20万元、城市通勤、纯电或插电混动、L2级辅助驾驶、至少5座等全部硬约束的前提下，示例紧凑型轿车A价格18.8万元，纯电动力和520km续航更贴合城市通勤场景，且5座与L2均满足要求。\",\"tradeoffs\":[\"需要具备较便利的充电条件\",\"长途出行补能灵活性低于插电混动车型\"]},\"next_question\":null,\"confidence\":\"high\",\"status\":\"final\",\"assumptions\":[\"价格单位按万元人民币理解\",\"车型库为冒烟测试模拟数据，仅依据库内字段判断\"]}",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 1795,
+          "completion_tokens": 1726,
+          "total_tokens": 3521
+        },
+        "latency_ms": 12500,
+        "attempts": 1,
+        "response_id": "c62092f5-a2cd-4346-8f6b-44cde353c5fb",
+        "reasoning_present": true,
+        "attempt_latencies_ms": [
+          12500
+        ]
+      },
+      "attempts": [
+        {
+          "model_key": "deepseek_flash",
+          "requested_model": "deepseek-flash",
+          "served_model": "deepseek-flash",
+          "content": "{\"turn_summary\":\"第1轮已提取预算、用途、能源形式、辅助驾驶和座位数约束；车型库中示例紧凑型轿车A与示例紧凑型SUV B均满足硬约束，示例中大型SUV C因价格超过20万元被排除。信息已足够，给出最终推荐。\",\"effective_constraints\":[{\"name\":\"预算上限\",\"value\":\"不超过20万元人民币\",\"source_turn\":1,\"status\":\"active\"},{\"name\":\"主要用途\",\"value\":\"城市通勤\",\"source_turn\":1,\"status\":\"active\"},{\"name\":\"能源形式\",\"value\":\"纯电或插电混动\",\"source_turn\":1,\"status\":\"active\"},{\"name\":\"辅助驾驶\",\"value\":\"必须有L2级辅助驾驶\",\"source_turn\":1,\"status\":\"active\"},{\"name\":\"座位数\",\"value\":\"至少5座\",\"source_turn\":1,\"status\":\"active\"}],\"candidate_cars\":[{\"model\":\"示例紧凑型轿车A\",\"trim\":\"智驾版\",\"year\":2026,\"price_wan\":18.8,\"meets_constraints\":[\"预算不超过20万元：18.8万元\",\"纯电：满足\",\"L2级辅助驾驶：满足\",\"至少5座：5座满足\",\"城市通勤：紧凑型轿车适合\"],\"why_fit\":\"价格18.8万元在预算内，纯电动力适合城市通勤，具备L2级辅助驾驶和5座，续航520km可用于日常通勤。\",\"risks\":[\"纯电车型依赖充电条件，需确认住宅或单位充电便利性\",\"长途出行需规划补能，灵活性不如插电混动\"],\"evidence_ids\":[\"smoke-car-001\"]},{\"model\":\"示例紧凑型SUV B\",\"trim\":\"舒适版\",\"year\":2026,\"price_wan\":17.6,\"meets_constraints\":[\"预算不超过20万元：17.6万元\",\"插电混动：满足\",\"L2级辅助驾驶：满足\",\"至少5座：5座满足\",\"城市通勤：SUV可用于城市通勤\"],\"why_fit\":\"价格17.6万元在预算内，插电混动可兼顾城市通勤与长途补能灵活性，具备L2级辅助驾驶和5座。\",\"risks\":[\"车型库未给出纯电续航，若希望主要用电通勤需进一步核实\",\"插电混动包含两套动力系统，维护复杂度和使用成本需结合充电条件评估\"],\"evidence_ids\":[\"smoke-car-002\"]}],\"final_recommendation\":{\"model\":\"示例紧凑型轿车A\",\"trim\":\"智驾版\",\"year\":2026,\"reason\":\"在满足不超过20万元、城市通勤、纯电或插电混动、L2级辅助驾驶、至少5座等全部硬约束的前提下，示例紧凑型轿车A价格18.8万元，纯电动力和520km续航更贴合城市通勤场景，且5座与L2均满足要求。\",\"tradeoffs\":[\"需要具备较便利的充电条件\",\"长途出行补能灵活性低于插电混动车型\"]},\"next_question\":null,\"confidence\":\"high\",\"status\":\"final\",\"assumptions\":[\"价格单位按万元人民币理解\",\"车型库为冒烟测试模拟数据，仅依据库内字段判断\"]}",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 1795,
+            "completion_tokens": 1726,
+            "total_tokens": 3521
+          },
+          "latency_ms": 12500,
+          "attempts": 1,
+          "response_id": "c62092f5-a2cd-4346-8f6b-44cde353c5fb",
+          "reasoning_present": true,
+          "attempt_latencies_ms": [
+            12500
+          ]
+        }
+      ],
+      "parsed_output": {
+        "turn_summary": "第1轮已提取预算、用途、能源形式、辅助驾驶和座位数约束；车型库中示例紧凑型轿车A与示例紧凑型SUV B均满足硬约束，示例中大型SUV C因价格超过20万元被排除。信息已足够，给出最终推荐。",
+        "effective_constraints": [
+          {
+            "name": "预算上限",
+            "value": "不超过20万元人民币",
+            "source_turn": 1,
+            "status": "active"
+          },
+          {
+            "name": "主要用途",
+            "value": "城市通勤",
+            "source_turn": 1,
+            "status": "active"
+          },
+          {
+            "name": "能源形式",
+            "value": "纯电或插电混动",
+            "source_turn": 1,
+            "status": "active"
+          },
+          {
+            "name": "辅助驾驶",
+            "value": "必须有L2级辅助驾驶",
+            "source_turn": 1,
+            "status": "active"
+          },
+          {
+            "name": "座位数",
+            "value": "至少5座",
+            "source_turn": 1,
+            "status": "active"
+          }
+        ],
+        "candidate_cars": [
+          {
+            "model": "示例紧凑型轿车A",
+            "trim": "智驾版",
+            "year": 2026,
+            "price_wan": 18.8,
+            "meets_constraints": [
+              "预算不超过20万元：18.8万元",
+              "纯电：满足",
+              "L2级辅助驾驶：满足",
+              "至少5座：5座满足",
+              "城市通勤：紧凑型轿车适合"
+            ],
+            "why_fit": "价格18.8万元在预算内，纯电动力适合城市通勤，具备L2级辅助驾驶和5座，续航520km可用于日常通勤。",
+            "risks": [
+              "纯电车型依赖充电条件，需确认住宅或单位充电便利性",
+              "长途出行需规划补能，灵活性不如插电混动"
+            ],
+            "evidence_ids": [
+              "smoke-car-001"
+            ]
+          },
+          {
+            "model": "示例紧凑型SUV B",
+            "trim": "舒适版",
+            "year": 2026,
+            "price_wan": 17.6,
+            "meets_constraints": [
+              "预算不超过20万元：17.6万元",
+              "插电混动：满足",
+              "L2级辅助驾驶：满足",
+              "至少5座：5座满足",
+              "城市通勤：SUV可用于城市通勤"
+            ],
+            "why_fit": "价格17.6万元在预算内，插电混动可兼顾城市通勤与长途补能灵活性，具备L2级辅助驾驶和5座。",
+            "risks": [
+              "车型库未给出纯电续航，若希望主要用电通勤需进一步核实",
+              "插电混动包含两套动力系统，维护复杂度和使用成本需结合充电条件评估"
+            ],
+            "evidence_ids": [
+              "smoke-car-002"
+            ]
+          }
+        ],
+        "final_recommendation": {
+          "model": "示例紧凑型轿车A",
+          "trim": "智驾版",
+          "year": 2026,
+          "reason": "在满足不超过20万元、城市通勤、纯电或插电混动、L2级辅助驾驶、至少5座等全部硬约束的前提下，示例紧凑型轿车A价格18.8万元，纯电动力和520km续航更贴合城市通勤场景，且5座与L2均满足要求。",
+          "tradeoffs": [
+            "需要具备较便利的充电条件",
+            "长途出行补能灵活性低于插电混动车型"
+          ]
+        },
+        "next_question": null,
+        "confidence": "high",
+        "status": "final",
+        "assumptions": [
+          "价格单位按万元人民币理解",
+          "车型库为冒烟测试模拟数据，仅依据库内字段判断"
+        ]
+      },
+      "role": "通用快速模型",
+      "configured_model_id": "deepseek-flash",
+      "parameters": {
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 4096,
+        "stream": false,
+        "response_format": {
+          "type": "json_object"
+        }
+      }
+    },
+    {
+      "model_key": "deepseek_v4_pro",
+      "requested_model": "deepseek-v4-pro",
+      "served_model": "deepseek-v4-pro",
+      "valid": true,
+      "validation_issues": [],
+      "correction_attempts": 0,
+      "prompt_fingerprint": "4ffc5f7ddcac9c3aa1e03a1f33ddb9931418d93c418c573113f0c8bcf4acd811",
+      "total_usage": {
+        "prompt_tokens": 1846,
+        "completion_tokens": 2622,
+        "total_tokens": 4468
+      },
+      "total_latency_ms": 31938,
+      "final_response": {
+        "model_key": "deepseek_v4_pro",
+        "requested_model": "deepseek-v4-pro",
+        "served_model": "deepseek-v4-pro",
+        "content": "{\n  \"turn_summary\": \"从第1轮需求提取预算、用途、能源形式、辅助驾驶和座位数约束；在3款车型中筛选出2款满足全部硬约束的候选，并给出最终推荐。\",\n  \"effective_constraints\": [\n    {\n      \"name\": \"预算\",\n      \"value\": \"不超过20万元\",\n      \"source_turn\": 1,\n      \"status\": \"active\"\n    },\n    {\n      \"name\": \"用途\",\n      \"value\": \"城市通勤\",\n      \"source_turn\": 1,\n      \"status\": \"active\"\n    },\n    {\n      \"name\": \"能源形式\",\n      \"value\": \"纯电或插电混动\",\n      \"source_turn\": 1,\n      \"status\": \"active\"\n    },\n    {\n      \"name\": \"辅助驾驶\",\n      \"value\": \"L2级\",\n      \"source_turn\": 1,\n      \"status\": \"active\"\n    },\n    {\n      \"name\": \"座位数\",\n      \"value\": \"至少5座\",\n      \"source_turn\": 1,\n      \"status\": \"active\"\n    }\n  ],\n  \"candidate_cars\": [\n    {\n      \"model\": \"示例紧凑型轿车A\",\n      \"trim\": \"智驾版\",\n      \"year\": 2026,\n      \"price_wan\": 18.8,\n      \"meets_constraints\": [\n        \"预算不超过20万元\",\n        \"能源形式为纯电\",\n        \"L2级辅助驾驶\",\n        \"至少5座\"\n      ],\n      \"why_fit\": \"纯电续航520km，满足城市通勤；L2级辅助驾驶；5座；售价18.8万元在预算内。\",\n      \"risks\": [\n        \"需要充电条件\",\n        \"冬季续航可能衰减\"\n      ],\n      \"evidence_ids\": [\n        \"smoke-car-001\"\n      ]\n    },\n    {\n      \"model\": \"示例紧凑型SUV B\",\n      \"trim\": \"舒适版\",\n      \"year\": 2026,\n      \"price_wan\": 17.6,\n      \"meets_constraints\": [\n        \"预算不超过20万元\",\n        \"能源形式为插电混动\",\n        \"L2级辅助驾驶\",\n        \"至少5座\"\n      ],\n      \"why_fit\": \"插电混动综合续航1100km，城市通勤可油可电；L2级辅助驾驶；5座；售价17.6万元低于预算且价格更低。\",\n      \"risks\": [\n        \"插混系统结构更复杂\",\n        \"纯电使用需充电以降低油耗\"\n      ],\n      \"evidence_ids\": [\n        \"smoke-car-002\"\n      ]\n    }\n  ],\n  \"final_recommendation\": {\n    \"model\": \"示例紧凑型SUV B\",\n    \"trim\": \"舒适版\",\n    \"year\": 2026,\n    \"reason\": \"在20万元预算内，该车以17.6万元满足全部硬约束；插电混动兼顾城市短途用电和长途用油，综合续航1100km，更适合未明确充电条件的城市通勤场景。\",\n    \"tradeoffs\": [\n      \"牺牲纯电车型A更低的用电成本\",\n      \"B为紧凑型SUV，尺寸/驾驶感受可能不同于轿车A\"\n    ]\n  },\n  \"next_question\": null,\n  \"confidence\": \"high\",\n  \"status\": \"final\",\n  \"assumptions\": [\n    \"用户对纯电和插混均可接受\",\n    \"城市通勤里程在纯电或插混续航覆盖范围内\",\n    \"没有品牌或外观等其他偏好\"\n  ]\n}",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 1846,
+          "completion_tokens": 2622,
+          "total_tokens": 4468
+        },
+        "latency_ms": 31938,
+        "attempts": 1,
+        "response_id": "051627f4-8805-42e0-b699-8a7573c82cec",
+        "reasoning_present": true,
+        "attempt_latencies_ms": [
+          31938
+        ]
+      },
+      "attempts": [
+        {
+          "model_key": "deepseek_v4_pro",
+          "requested_model": "deepseek-v4-pro",
+          "served_model": "deepseek-v4-pro",
+          "content": "{\n  \"turn_summary\": \"从第1轮需求提取预算、用途、能源形式、辅助驾驶和座位数约束；在3款车型中筛选出2款满足全部硬约束的候选，并给出最终推荐。\",\n  \"effective_constraints\": [\n    {\n      \"name\": \"预算\",\n      \"value\": \"不超过20万元\",\n      \"source_turn\": 1,\n      \"status\": \"active\"\n    },\n    {\n      \"name\": \"用途\",\n      \"value\": \"城市通勤\",\n      \"source_turn\": 1,\n      \"status\": \"active\"\n    },\n    {\n      \"name\": \"能源形式\",\n      \"value\": \"纯电或插电混动\",\n      \"source_turn\": 1,\n      \"status\": \"active\"\n    },\n    {\n      \"name\": \"辅助驾驶\",\n      \"value\": \"L2级\",\n      \"source_turn\": 1,\n      \"status\": \"active\"\n    },\n    {\n      \"name\": \"座位数\",\n      \"value\": \"至少5座\",\n      \"source_turn\": 1,\n      \"status\": \"active\"\n    }\n  ],\n  \"candidate_cars\": [\n    {\n      \"model\": \"示例紧凑型轿车A\",\n      \"trim\": \"智驾版\",\n      \"year\": 2026,\n      \"price_wan\": 18.8,\n      \"meets_constraints\": [\n        \"预算不超过20万元\",\n        \"能源形式为纯电\",\n        \"L2级辅助驾驶\",\n        \"至少5座\"\n      ],\n      \"why_fit\": \"纯电续航520km，满足城市通勤；L2级辅助驾驶；5座；售价18.8万元在预算内。\",\n      \"risks\": [\n        \"需要充电条件\",\n        \"冬季续航可能衰减\"\n      ],\n      \"evidence_ids\": [\n        \"smoke-car-001\"\n      ]\n    },\n    {\n      \"model\": \"示例紧凑型SUV B\",\n      \"trim\": \"舒适版\",\n      \"year\": 2026,\n      \"price_wan\": 17.6,\n      \"meets_constraints\": [\n        \"预算不超过20万元\",\n        \"能源形式为插电混动\",\n        \"L2级辅助驾驶\",\n        \"至少5座\"\n      ],\n      \"why_fit\": \"插电混动综合续航1100km，城市通勤可油可电；L2级辅助驾驶；5座；售价17.6万元低于预算且价格更低。\",\n      \"risks\": [\n        \"插混系统结构更复杂\",\n        \"纯电使用需充电以降低油耗\"\n      ],\n      \"evidence_ids\": [\n        \"smoke-car-002\"\n      ]\n    }\n  ],\n  \"final_recommendation\": {\n    \"model\": \"示例紧凑型SUV B\",\n    \"trim\": \"舒适版\",\n    \"year\": 2026,\n    \"reason\": \"在20万元预算内，该车以17.6万元满足全部硬约束；插电混动兼顾城市短途用电和长途用油，综合续航1100km，更适合未明确充电条件的城市通勤场景。\",\n    \"tradeoffs\": [\n      \"牺牲纯电车型A更低的用电成本\",\n      \"B为紧凑型SUV，尺寸/驾驶感受可能不同于轿车A\"\n    ]\n  },\n  \"next_question\": null,\n  \"confidence\": \"high\",\n  \"status\": \"final\",\n  \"assumptions\": [\n    \"用户对纯电和插混均可接受\",\n    \"城市通勤里程在纯电或插混续航覆盖范围内\",\n    \"没有品牌或外观等其他偏好\"\n  ]\n}",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 1846,
+            "completion_tokens": 2622,
+            "total_tokens": 4468
+          },
+          "latency_ms": 31938,
+          "attempts": 1,
+          "response_id": "051627f4-8805-42e0-b699-8a7573c82cec",
+          "reasoning_present": true,
+          "attempt_latencies_ms": [
+            31938
+          ]
+        }
+      ],
+      "parsed_output": {
+        "turn_summary": "从第1轮需求提取预算、用途、能源形式、辅助驾驶和座位数约束；在3款车型中筛选出2款满足全部硬约束的候选，并给出最终推荐。",
+        "effective_constraints": [
+          {
+            "name": "预算",
+            "value": "不超过20万元",
+            "source_turn": 1,
+            "status": "active"
+          },
+          {
+            "name": "用途",
+            "value": "城市通勤",
+            "source_turn": 1,
+            "status": "active"
+          },
+          {
+            "name": "能源形式",
+            "value": "纯电或插电混动",
+            "source_turn": 1,
+            "status": "active"
+          },
+          {
+            "name": "辅助驾驶",
+            "value": "L2级",
+            "source_turn": 1,
+            "status": "active"
+          },
+          {
+            "name": "座位数",
+            "value": "至少5座",
+            "source_turn": 1,
+            "status": "active"
+          }
+        ],
+        "candidate_cars": [
+          {
+            "model": "示例紧凑型轿车A",
+            "trim": "智驾版",
+            "year": 2026,
+            "price_wan": 18.8,
+            "meets_constraints": [
+              "预算不超过20万元",
+              "能源形式为纯电",
+              "L2级辅助驾驶",
+              "至少5座"
+            ],
+            "why_fit": "纯电续航520km，满足城市通勤；L2级辅助驾驶；5座；售价18.8万元在预算内。",
+            "risks": [
+              "需要充电条件",
+              "冬季续航可能衰减"
+            ],
+            "evidence_ids": [
+              "smoke-car-001"
+            ]
+          },
+          {
+            "model": "示例紧凑型SUV B",
+            "trim": "舒适版",
+            "year": 2026,
+            "price_wan": 17.6,
+            "meets_constraints": [
+              "预算不超过20万元",
+              "能源形式为插电混动",
+              "L2级辅助驾驶",
+              "至少5座"
+            ],
+            "why_fit": "插电混动综合续航1100km，城市通勤可油可电；L2级辅助驾驶；5座；售价17.6万元低于预算且价格更低。",
+            "risks": [
+              "插混系统结构更复杂",
+              "纯电使用需充电以降低油耗"
+            ],
+            "evidence_ids": [
+              "smoke-car-002"
+            ]
+          }
+        ],
+        "final_recommendation": {
+          "model": "示例紧凑型SUV B",
+          "trim": "舒适版",
+          "year": 2026,
+          "reason": "在20万元预算内，该车以17.6万元满足全部硬约束；插电混动兼顾城市短途用电和长途用油，综合续航1100km，更适合未明确充电条件的城市通勤场景。",
+          "tradeoffs": [
+            "牺牲纯电车型A更低的用电成本",
+            "B为紧凑型SUV，尺寸/驾驶感受可能不同于轿车A"
+          ]
+        },
+        "next_question": null,
+        "confidence": "high",
+        "status": "final",
+        "assumptions": [
+          "用户对纯电和插混均可接受",
+          "城市通勤里程在纯电或插混续航覆盖范围内",
+          "没有品牌或外观等其他偏好"
+        ]
+      },
+      "role": "高阶能力模型",
+      "configured_model_id": "deepseek-v4-pro",
+      "parameters": {
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 4096,
+        "stream": false,
+        "response_format": {
+          "type": "json_object"
+        }
+      }
+    }
+  ],
+  "summary": [
+    {
+      "model_key": "deepseek_flash",
+      "requested_model": "deepseek-flash",
+      "served_model": "deepseek-flash",
+      "valid": true,
+      "finish_reason": "stop",
+      "total_tokens": 3521,
+      "latency_ms": 12500,
+      "correction_attempts": 0
+    },
+    {
+      "model_key": "deepseek_v4_pro",
+      "requested_model": "deepseek-v4-pro",
+      "served_model": "deepseek-v4-pro",
+      "valid": true,
+      "finish_reason": "stop",
+      "total_tokens": 4468,
+      "latency_ms": 31938,
+      "correction_attempts": 0
+    }
+  ]
+}

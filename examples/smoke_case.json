@@ -1,0 +1,48 @@
+{
+  "scenario": {
+    "id": "smoke-city-commute-01",
+    "name": "城市通勤冒烟测试",
+    "purpose": "仅验证模型接入、共享提示词与 JSON 输出链路，不作为正式评测结果。",
+    "user_request": "预算不超过20万元，主要用于城市通勤。能源形式可为纯电或插电混动，必须有L2级辅助驾驶，至少5座。",
+    "effective_turn": 1
+  },
+  "vehicle_data": [
+    {
+      "source_id": "smoke-car-001",
+      "model": "示例紧凑型轿车A",
+      "trim": "智驾版",
+      "year": 2026,
+      "price_wan": 18.8,
+      "energy": "纯电",
+      "seats": 5,
+      "adas": "L2",
+      "range_km": 520,
+      "source_note": "教学模拟数据，仅用于冒烟测试"
+    },
+    {
+      "source_id": "smoke-car-002",
+      "model": "示例紧凑型SUV B",
+      "trim": "舒适版",
+      "year": 2026,
+      "price_wan": 17.6,
+      "energy": "插电混动",
+      "seats": 5,
+      "adas": "L2",
+      "range_km": 1100,
+      "source_note": "教学模拟数据，仅用于冒烟测试"
+    },
+    {
+      "source_id": "smoke-car-003",
+      "model": "示例中大型SUV C",
+      "trim": "基础版",
+      "year": 2026,
+      "price_wan": 23.2,
+      "energy": "纯电",
+      "seats": 7,
+      "adas": "L2",
+      "range_km": 610,
+      "source_note": "教学模拟数据，仅用于冒烟测试"
+    }
+  ]
+}
+

@@ -6,7 +6,7 @@
   "shared_parameters": {
     "temperature": 0.0,
     "top_p": 1.0,
-    "max_tokens": 1536,
+    "max_tokens": 4096,
     "stream": false,
     "response_format": {
       "type": "json_object"

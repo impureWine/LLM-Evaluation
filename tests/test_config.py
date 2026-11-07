@@ -23,7 +23,7 @@ class ModelRegistryTests(unittest.TestCase):
         for spec in registry.ordered():
             self.assertEqual(0.0, spec.parameters["temperature"])
             self.assertEqual(1.0, spec.parameters["top_p"])
-            self.assertEqual(1536, spec.parameters["max_tokens"])
+            self.assertEqual(4096, spec.parameters["max_tokens"])
             self.assertEqual(
                 {"type": "json_object"},
                 spec.parameters["response_format"],
@@ -38,7 +38,8 @@ class ModelRegistryTests(unittest.TestCase):
 
     def test_registry_rejects_embedded_like_secret(self):
         source = Path("configs/models.json").read_text(encoding="utf-8")
-        source = source.replace('"schema_version": 1', '"schema_version": 1, "leak": "sk-1234567890"')
+        test_value = '"leak": "' + 'sk-' + 'test-placeholder"'
+        source = source.replace('"schema_version": 1', '"schema_version": 1, ' + test_value)
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "models.json"
             path.write_text(source, encoding="utf-8")
