@@ -33,7 +33,61 @@ def scenario_messages(bundle, scenario, vehicles):
     ]
 
 
-def run_task(client, spec, initial, followups):
+def extract_parameter_comparison(payload, vehicles):
+    """Join model-selected evidence IDs to frozen facts; never infer missing specs."""
+    by_source = {str(vehicle.get("source_id")): vehicle for vehicle in vehicles}
+    rows = []
+    unmatched = []
+    candidates = (payload or {}).get("candidate_cars", [])
+    if not isinstance(candidates, list):
+        candidates = []
+    for candidate in candidates:
+        if not isinstance(candidate, dict):
+            unmatched.append({"candidate": candidate, "reason": "candidate_is_not_an_object"})
+            continue
+        matched = False
+        evidence_ids = candidate.get("evidence_ids", [])
+        if not isinstance(evidence_ids, list):
+            evidence_ids = []
+        for evidence_id in evidence_ids:
+            vehicle = by_source.get(str(evidence_id))
+            if not vehicle:
+                continue
+            if (vehicle.get("model"), vehicle.get("trim"), vehicle.get("year")) != (
+                candidate.get("model"), candidate.get("trim"), candidate.get("year")
+            ):
+                continue
+            rows.append({
+                "source_id": vehicle.get("source_id"),
+                "model": vehicle.get("model"),
+                "trim": vehicle.get("trim"),
+                "year": vehicle.get("year"),
+                "price_wan": vehicle.get("price_wan"),
+                "energy": vehicle.get("energy"),
+                "seats": vehicle.get("seats"),
+                "adas": vehicle.get("adas"),
+            })
+            matched = True
+        if not matched:
+            unmatched.append({
+                "model": candidate.get("model"),
+                "trim": candidate.get("trim"),
+                "year": candidate.get("year"),
+                "evidence_ids": evidence_ids,
+                "reason": "no_matching_catalog_entry",
+            })
+    return {"source": "frozen_vehicle_data", "rows": rows, "unmatched_candidates": unmatched}
+
+
+def write_run_record(path, record):
+    """Create a run record once; reruns must use a new batch/run ID."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("x", encoding="utf-8") as stream:
+        json.dump(record, stream, ensure_ascii=False, indent=2)
+        stream.write("\n")
+
+
+def run_task(client, spec, initial, followups, vehicle_data):
     messages = list(initial)
     turns = []
     started = time.monotonic()
@@ -43,9 +97,15 @@ def run_task(client, spec, initial, followups):
         try:
             result = client.complete(spec, messages)
         except LLMEvaluationError as exc:
-            turns.append({"turn": turn, "valid": False, "error_type": type(exc).__name__})
+            turns.append({"turn": turn, "valid": False, "error_type": type(exc).__name__,
+                          "error": str(exc)})
             break
-        turns.append({"turn": turn, **result.as_record()})
+        turn_record = {"turn": turn, **result.as_record()}
+        if turn == 3:
+            turn_record["parameter_comparison"] = extract_parameter_comparison(
+                result.payload, vehicle_data
+            )
+        turns.append(turn_record)
         if not result.valid:
             break
         messages.append(ChatMessage(role="assistant", content=result.final.content))
@@ -110,7 +170,7 @@ def main():
             for repetition in range(1, repetitions + 1):
                 run_id = f"{spec.key}-{scenario_id}-{repetition}"
                 started_at = datetime.now(timezone.utc).isoformat()
-                result = run_task(client, spec, initial, followups)
+                result = run_task(client, spec, initial, followups, design["vehicle_data"])
                 record = {
                     **provenance,
                     "run_id": run_id,
@@ -123,9 +183,7 @@ def main():
                     "batch_kind": "pilot" if repetitions == 1 else "evaluation_candidate",
                     **result,
                 }
-                (batch / f"{run_id}.json").write_text(
-                    json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8"
-                )
+                write_run_record(batch / f"{run_id}.json", record)
                 completed += result["completed"]
     planned = len(tasks) * len(specs) * repetitions
     print(f"{completed}/{planned} completed: {batch}")
