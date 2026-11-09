@@ -23,7 +23,7 @@ python -m llm_eval.scoring --runs runs/<批次>
 python -m llm_eval.scoring --runs runs/<批次> --review runs/<批次>/scores/review-queue.csv
 ```
 
-输出：`scores.csv`（逐次分数与失败项）、`summary.csv`（模型×场景汇总）、`review-queue.csv`（待判定项）、`review-hints.csv`（仅提示，不影响分数）、`summary.md`、`scores.json`。
+输出：`scores.csv`（逐次分数与失败项）、`summary.csv`（模型×场景汇总）、`review-queue.csv`（待判定项）、`review-hints.csv`（仅提示，不影响分数）、`report-scores.csv`（可直接传给 `python -m llm_eval.report --scores`）、`summary.md`、`scores.json`。
 
 `review-queue.csv` 的 `kind` 列区分两类：`blocking` 表示缺证据、分值暂记 0，人工判定前不计入成功；`override` 表示自动已判不通过但允许人工改判，`default` 列记录自动结论。两类都必须填 `verdict`（`pass`/`fail`）才算复核完成，改判理由另记在案例或复核记录中。
 
@@ -66,6 +66,7 @@ python -m llm_eval.scoring --runs runs/<批次> --review runs/<批次>/scores/re
 - 第 1 轮：候选列表非空。
 - 第 2 轮：更新后的候选列表非空。
 - 第 3 轮：用 `parameter_comparison` 检查是否覆盖全部已匹配候选，并要求运行器的 `comparison_audit` 通过；仅旧指纹批次没有该字段时，才退化为检查 `why_fit` 是否同时出现价格数值、能源、座位数和辅助驾驶等级。
+- 第 1、2、4 轮：`parameter_comparison` 必须为空数组；非空按该轮指令遵循不通过计，依据是运行器 `comparison_audit` 的对应审计项。
 
 按问号计数是可复现的近似口径，不追求语义精确。出现“一个问号里含两件事”或“两个问号但只有一个二选一”的边界情况时，该项以 `override` 进入复核队列：自动结论仍为不通过，人工可凭完整上下文改判为通过，但必须记录改判理由。若同轮还失败其他不可改判的检查（如候选列表缺失），整项不得改判，避免一次改判连带放过其他缺陷。
 

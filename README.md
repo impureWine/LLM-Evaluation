@@ -148,4 +148,6 @@ python -m llm_eval.scoring --runs runs/<批次> --review runs/<批次>/scores/re
 `scores.csv` 为逐次分数、失败项与最终推荐车型，`summary.csv`、`summary.md` 为模型×场景汇总
 （含推荐分布），`review-queue.csv` 为人工判定项：`blocking` 缺证据待判、`override` 可改判，
 `review-hints.csv` 只作复核提示、不影响分数。
+`report-scores.csv` 的列与 `python -m llm_eval.report --scores` 的约定一致，可直接出图；
+含未决复核项的运行留空分数，避免半成品进入图表。
 评分细则、评分实现与参照数据须同批冻结，改动按协议第 10 节升版本并重算指纹。

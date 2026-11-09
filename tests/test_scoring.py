@@ -9,11 +9,13 @@ import unittest
 
 from llm_eval.scoring import (
     Catalog,
+    REPORT_SCORE_FIELDS,
     aggregate,
     count_questions,
     main,
     match_vehicle,
     read_review,
+    report_score_rows,
     score_run,
 )
 
@@ -91,6 +93,7 @@ def payload(candidates, declared=None, final=None, next_question=None, status="c
         "turn_summary": "测试输出",
         "effective_constraints": declared if declared is not None else constraints(),
         "candidate_cars": candidates,
+        "parameter_comparison": [],
         "final_recommendation": final,
         "next_question": next_question,
         "confidence": "medium",
@@ -115,7 +118,7 @@ def comparison_rows(*cars):
             "seats": vehicle["seats"],
             "adas": vehicle["adas"],
         })
-    return {"source": "frozen_vehicle_data", "rows": rows, "unmatched_candidates": []}
+    return rows
 
 
 def city_payloads():
@@ -137,9 +140,15 @@ def city_payloads():
 
 
 def build_record(payloads, scenario_id="city", comparison=None, valid=True, run_id=None,
-                 model_key="zhipu_glm_47_flash"):
+                 model_key="zhipu_glm_47_flash", audit=True, audit_issues=()):
     turns = []
     for index, turn_payload in enumerate(payloads, start=1):
+        turn_payload = dict(turn_payload)
+        if index == 3 and comparison is not None:
+            turn_payload["parameter_comparison"] = list(comparison)
+        if not audit and index == 3 and comparison is None:
+            # v1.0 records predate parameter_comparison: the field is absent, not empty.
+            turn_payload.pop("parameter_comparison", None)
         entry = {
             "turn": index,
             "model_key": model_key,
@@ -153,8 +162,19 @@ def build_record(payloads, scenario_id="city", comparison=None, valid=True, run_
             "attempts": [],
             "parsed_output": turn_payload,
         }
-        if index == 3 and comparison is not None:
-            entry["parameter_comparison"] = comparison
+        if audit:
+            rows = turn_payload.get("parameter_comparison")
+            rows = [row for row in rows if isinstance(row, dict)] if isinstance(rows, list) else []
+            issues = list(audit_issues) if index == 3 else []
+            if index == 3 and not issues and not rows:
+                issues = ["parameter_comparison does not cover candidates"]
+            if index != 3 and rows:
+                issues = ["parameter_comparison must be empty outside turn 3"]
+            entry["comparison_audit"] = {
+                "passed": not issues,
+                "issues": issues,
+                "checked_rows": len(rows),
+            }
         turns.append(entry)
     return {
         "run_id": run_id or "{}-{}-1".format(model_key, scenario_id),
@@ -265,8 +285,8 @@ class ScoringTests(unittest.TestCase):
         self.assertFalse(instruction["reviewable"])
         self.assertEqual([row for row in result["review_rows"] if row["kind"] == "override"], [])
 
-    def test_missing_parameter_table_needs_review(self):
-        record = build_record(city_payloads())
+    def test_legacy_record_without_comparison_needs_review(self):
+        record = build_record(city_payloads(), audit=False)
         result = score_run(record, self.references, self.catalog)
         instruction = item_of(result, "instruction", 3)
         self.assertEqual(instruction["points"], 5)
@@ -278,18 +298,56 @@ class ScoringTests(unittest.TestCase):
         self.assertIsNone(result["success"])
         self.assertEqual(len(result["review_rows"]), 1)
 
+    def test_empty_comparison_table_fails_contract(self):
+        result = score_run(build_record(city_payloads()), self.references, self.catalog)
+        instruction = item_of(result, "instruction", 3)
+        truth = item_of(result, "truthfulness", 3)
+        self.assertEqual(instruction["points"], 0)
+        self.assertIn("parameter_table_incomplete", instruction["reason"])
+        self.assertEqual(truth["points"], 0)
+        self.assertIn("comparison_audit_failed", truth["reason"])
+        self.assertEqual(result["score"], 90)
+
+    def test_comparison_rows_outside_turn_three_break_instruction(self):
+        payloads = city_payloads()
+        payloads[0]["parameter_comparison"] = comparison_rows(car_a())
+        result = score_run(build_record(payloads, comparison=comparison_rows(car_a(), car_e())),
+                           self.references, self.catalog)
+        instruction = item_of(result, "instruction", 1)
+        self.assertEqual(instruction["points"], 0)
+        self.assertIn("comparison_rows_outside_turn3", instruction["reason"])
+        self.assertEqual(item_of(result, "truthfulness", 1)["points"], 5)
+        self.assertEqual(result["score"], 97)
+
     def test_review_pass_can_settle_pending_point(self):
-        record = build_record(city_payloads())
+        record = build_record(city_payloads(), audit=False)
         review = {(record["run_id"], 3, "truthfulness"): "pass"}
         result = score_run(record, self.references, self.catalog, review)
         self.assertEqual(result["score"], 100)
         self.assertEqual(result["pending_points"], 0)
         self.assertTrue(result["success"])
 
-    def test_comparison_price_mismatch_breaks_truthfulness(self):
+    def test_failed_audit_breaks_truthfulness_not_instruction(self):
         rows = comparison_rows(car_a(), car_e())
-        rows["rows"][0]["price_wan"] = 99.9
-        result = score_run(build_record(city_payloads(), comparison=rows), self.references, self.catalog)
+        rows[0]["price_wan"] = 99.9
+        result = score_run(
+            build_record(city_payloads(), comparison=rows, audit_issues=("row price mismatch",)),
+            self.references, self.catalog,
+        )
+        instruction = item_of(result, "instruction", 3)
+        truth = item_of(result, "truthfulness", 3)
+        self.assertEqual(instruction["points"], 5)
+        self.assertEqual(truth["points"], 0)
+        self.assertIn("comparison_audit_failed", truth["reason"])
+        self.assertEqual(result["score"], 95)
+
+    def test_unverified_rows_are_checked_against_the_catalog(self):
+        rows = comparison_rows(car_a(), car_e())
+        rows[0]["price_wan"] = 99.9
+        result = score_run(
+            build_record(city_payloads(), comparison=rows, audit=False),
+            self.references, self.catalog,
+        )
         truth = item_of(result, "truthfulness", 3)
         self.assertEqual(truth["points"], 0)
         self.assertIn("comparison_price_mismatch", truth["reason"])
@@ -413,6 +471,21 @@ class ScoringTests(unittest.TestCase):
         self.assertEqual(city["distinct_recommendations"], 2)
         self.assertEqual(city["recommendation_mix"], "SIM-A×1;SIM-E×1")
         self.assertEqual(city["mean_score"], 100)
+
+    def test_report_score_file_matches_report_contract(self):
+        from llm_eval.report import SCORE_FIELDS as REPORT_TOOL_FIELDS
+
+        self.assertEqual(set(REPORT_SCORE_FIELDS), set(REPORT_TOOL_FIELDS))
+        scored = report_score_rows([score_run(self.perfect_city(), self.references, self.catalog)])[0]
+        self.assertEqual(scored["constraint_adherence_40"], 40)
+        self.assertEqual(scored["multi_turn_consistency_25"], 25)
+        self.assertEqual(scored["instruction_following_15"], 15)
+        self.assertEqual(scored["factuality_20"], 20)
+        pending = report_score_rows([
+            score_run(build_record(city_payloads(), audit=False), self.references, self.catalog)
+        ])[0]
+        self.assertNotIn("factuality_20", pending)
+        self.assertIn("待人工复核", pending["notes"])
 
     def test_match_vehicle_reports_conflicting_evidence(self):
         source_id, mode, problems = match_vehicle(car_a(evidence_ids=["SIM-E"]), self.catalog)

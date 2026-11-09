@@ -294,6 +294,9 @@ def analyze_turn(record_turn: Optional[Mapping[str, Any]], catalog: Catalog) -> 
         "valid": valid,
         "candidates": candidates,
         "final": final,
+        "audit": entry.get("comparison_audit") if isinstance(entry.get("comparison_audit"), dict) else None,
+        "comparison_rows": payload.get("parameter_comparison") if payload is not None
+        and isinstance(payload.get("parameter_comparison"), list) else None,
     }
 
 
@@ -346,25 +349,42 @@ def instruction_problems(
     problems: List[str] = []
     if turn_no < 4 and count_questions(payload.get("next_question")) > 1:
         problems.append("more_than_one_question")
+    audit = analysis.get("audit")
+    if turn_no != 3 and audit is not None and audit.get("passed") is not True:
+        problems.append("comparison_rows_outside_turn3")
     if turn_no in (1, 2):
         if not as_list(payload.get("candidate_cars")):
             problems.append("candidate_list_missing")
     elif turn_no == 3:
-        comparison = as_dict(analysis["record"]).get("parameter_comparison")
-        if isinstance(comparison, dict):
-            rows = as_list(comparison.get("rows"))
+        rows = analysis.get("comparison_rows")
+        if rows is not None:
             row_sources = {str(as_dict(row).get("source_id") or "").strip().upper() for row in rows}
-            unmatched = as_list(comparison.get("unmatched_candidates"))
             missing = [
                 candidate["source_id"] for candidate in candidates
                 if candidate["source_id"] and candidate["source_id"] not in row_sources
             ]
-            if unmatched or missing or not rows:
+            if missing or not rows:
                 problems.append("parameter_table_incomplete")
         else:
-            incomplete = [candidate for candidate in candidates if describes_comparison_fields(candidate)]
-            if incomplete or not candidates:
-                problems.append("parameter_table_text_missing")
+            comparison = as_dict(analysis["record"]).get("parameter_comparison")
+            if isinstance(comparison, dict):
+                legacy_rows = as_list(comparison.get("rows"))
+                row_sources = {
+                    str(as_dict(row).get("source_id") or "").strip().upper() for row in legacy_rows
+                }
+                unmatched = as_list(comparison.get("unmatched_candidates"))
+                missing = [
+                    candidate["source_id"] for candidate in candidates
+                    if candidate["source_id"] and candidate["source_id"] not in row_sources
+                ]
+                if unmatched or missing or not legacy_rows:
+                    problems.append("parameter_table_incomplete")
+            elif int(as_dict(audit).get("checked_rows") or 0) > 0:
+                pass
+            else:
+                incomplete = [candidate for candidate in candidates if describes_comparison_fields(candidate)]
+                if incomplete or not candidates:
+                    problems.append("parameter_table_text_missing")
     elif turn_no == 4:
         final = analysis.get("final")
         if final is None:
@@ -397,21 +417,38 @@ def truthfulness_problems(
         else:
             problems.extend(final["problems"])
     if turn_no == 3:
-        comparison = as_dict(analysis["record"]).get("parameter_comparison")
-        if not isinstance(comparison, dict):
-            return None
-        if as_list(comparison.get("unmatched_candidates")):
-            problems.append("comparison_unmatched_candidates")
-        rows = as_list(comparison.get("rows"))
-        if not rows:
-            problems.append("comparison_rows_missing")
-        for row in rows:
-            row = as_dict(row)
-            source = catalog.by_source.get(str(row.get("source_id") or "").strip().upper())
-            if source is None:
-                problems.append("comparison_unknown_source_id")
-                continue
-            problems.extend(check_comparison_row(row, source))
+        rows = analysis.get("comparison_rows")
+        audit = analysis.get("audit")
+        if audit is not None:
+            if audit.get("passed") is not True:
+                problems.append("comparison_audit_failed")
+                problems.extend(str(issue) for issue in as_list(audit.get("issues")))
+        elif rows is not None:
+            if not rows:
+                problems.append("comparison_rows_missing")
+            for row in rows:
+                row = as_dict(row)
+                source = catalog.by_source.get(str(row.get("source_id") or "").strip().upper())
+                if source is None:
+                    problems.append("comparison_unknown_source_id")
+                    continue
+                problems.extend(check_comparison_row(row, source))
+        else:
+            comparison = as_dict(analysis["record"]).get("parameter_comparison")
+            if not isinstance(comparison, dict):
+                return None
+            if as_list(comparison.get("unmatched_candidates")):
+                problems.append("comparison_unmatched_candidates")
+            legacy_rows = as_list(comparison.get("rows"))
+            if not legacy_rows:
+                problems.append("comparison_rows_missing")
+            for row in legacy_rows:
+                row = as_dict(row)
+                source = catalog.by_source.get(str(row.get("source_id") or "").strip().upper())
+                if source is None:
+                    problems.append("comparison_unknown_source_id")
+                    continue
+                problems.extend(check_comparison_row(row, source))
     return dedupe(problems)
 
 
@@ -446,6 +483,8 @@ def final_source_id_of(analysis: Mapping[str, Any]) -> str:
 
 
 def model_key_of(record: Mapping[str, Any]) -> str:
+    if record.get("model_key"):
+        return str(record["model_key"])
     for turn in as_list(record.get("turns")):
         value = as_dict(turn).get("model_key")
         if value:
@@ -698,6 +737,50 @@ REVIEW_FIELDS = (
 )
 HINT_FIELDS = ("run_id", "turn", "dimension", "hint")
 
+# Column layout expected by ``python -m llm_eval.report --scores`` so the same
+# scorecard can feed the results charts without a second transcription step.
+REPORT_SCORE_FIELDS = (
+    "run_id", "constraint_adherence_40", "multi_turn_consistency_25",
+    "instruction_following_15", "factuality_20", "reviewer", "notes",
+)
+REPORT_SCORE_MAP = {
+    "constraint_adherence_40": "constraint_fit",
+    "multi_turn_consistency_25": "consistency",
+    "instruction_following_15": "instruction",
+    "factuality_20": "truthfulness",
+}
+
+
+def report_score_rows(results: Sequence[Mapping[str, Any]]) -> List[Dict[str, Any]]:
+    """Rows for ``llm_eval.report --scores``.
+
+    Runs with unresolved manual checks leave the four columns blank on purpose:
+    the report then counts them as unscored instead of charting a half-verified
+    total.
+    """
+    rows: List[Dict[str, Any]] = []
+    for result in results:
+        if result["pending_points"]:
+            rows.append({
+                "run_id": result["run_id"],
+                "reviewer": "",
+                "notes": "待人工复核 {} 分，暂不输出分数".format(result["pending_points"]),
+            })
+            continue
+        failed = [
+            "{}#{}:{}".format(item["dimension"], item["turn"], item["reason"])
+            for item in result["items"] if not item["passed"]
+        ]
+        row: Dict[str, Any] = {
+            "run_id": result["run_id"],
+            "reviewer": "llm_eval.scoring（自动）",
+            "notes": "自动评分；全部通过" if not failed else "自动评分；未通过：" + " | ".join(failed),
+        }
+        for alias, dimension in REPORT_SCORE_MAP.items():
+            row[alias] = result["subtotals"][dimension]
+        rows.append(row)
+    return rows
+
 
 def write_csv(path: Path, rows: Sequence[Mapping[str, Any]], fieldnames: Sequence[str]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -795,6 +878,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     write_csv(out / "scores.csv", score_rows(results), SCORE_FIELDS)
     write_csv(out / "summary.csv", summary, SUMMARY_FIELDS)
     write_csv(out / "review-queue.csv", [row for result in results for row in result["review_rows"]], REVIEW_FIELDS)
+    write_csv(out / "report-scores.csv", report_score_rows(results), REPORT_SCORE_FIELDS)
     write_csv(
         out / "review-hints.csv",
         [{"run_id": result["run_id"], **hint} for result in results for hint in result["hints"]],

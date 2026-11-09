@@ -54,9 +54,8 @@ def car(catalog, source_id):
 
 def comparison(catalog, source_id):
     vehicle = catalog.by_source[source_id]
-    row = {key: vehicle[key] for key in
-           ("source_id", "model", "trim", "year", "price_wan", "energy", "seats", "adas")}
-    return {"source": "frozen_vehicle_data", "rows": [row], "unmatched_candidates": []}
+    return [{key: vehicle[key] for key in
+             ("source_id", "model", "trim", "year", "price_wan", "energy", "seats", "adas")}]
 
 
 def ledger(budget, supersede_old=True):
@@ -80,18 +79,22 @@ def synthetic_record(catalog, declared_budget):
     payloads = [
         {"turn_summary": "初选", "effective_constraints": ledger(declared_budget),
          "candidate_cars": [car(catalog, "SIM-B"), car(catalog, "SIM-C")],
+         "parameter_comparison": [],
          "final_recommendation": None, "next_question": "是否接受插混？",
          "confidence": "medium", "status": "candidate_only", "assumptions": []},
         {"turn_summary": "更新", "effective_constraints": ledger(declared_budget),
-         "candidate_cars": [car(catalog, "SIM-B")], "final_recommendation": None,
+         "candidate_cars": [car(catalog, "SIM-B")], "parameter_comparison": [],
+         "final_recommendation": None,
          "next_question": "是否接受18.6万元车型？", "confidence": "medium",
          "status": "candidate_only", "assumptions": []},
         {"turn_summary": "对比", "effective_constraints": ledger(declared_budget),
-         "candidate_cars": [car(catalog, "SIM-B")], "final_recommendation": None,
+         "candidate_cars": [car(catalog, "SIM-B")],
+         "parameter_comparison": comparison(catalog, "SIM-B"),
+         "final_recommendation": None,
          "next_question": None, "confidence": "medium",
          "status": "candidate_only", "assumptions": []},
         {"turn_summary": "推荐", "effective_constraints": ledger(declared_budget),
-         "candidate_cars": [car(catalog, "SIM-B")],
+         "candidate_cars": [car(catalog, "SIM-B")], "parameter_comparison": [],
          "final_recommendation": {"model": "教学车型 B", "trim": "长途版", "year": 2026,
                                   "reason": "当前唯一接近条件的车型",
                                   "tradeoffs": ["超出新预算0.1万元"]},
@@ -99,16 +102,16 @@ def synthetic_record(catalog, declared_budget):
     ]
     turns = []
     for index, payload in enumerate(payloads, start=1):
+        rows = payload["parameter_comparison"]
         entry = {"turn": index, "model_key": "zhipu_glm_47_flash", "valid": True,
                  "validation_issues": [], "correction_attempts": 0,
                  "total_usage": {"total_tokens": 100}, "total_latency_ms": 1000,
+                 "comparison_audit": {"passed": True, "issues": [], "checked_rows": len(rows)},
                  "parsed_output": payload}
-        if index == 3:
-            entry["parameter_comparison"] = comparison(catalog, "SIM-B")
         turns.append(entry)
     return {"run_id": "synthetic-change-18.5", "scenario_id": "change", "repetition": 1,
             "batch_kind": "synthetic_fixture", "turns": turns, "elapsed_ms": 4000,
-            "completed": True}
+            "output_contract_completed": True}
 
 
 def item_of(result, dimension, turn):
