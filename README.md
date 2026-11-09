@@ -87,6 +87,16 @@ JSON 模式、Schema 校验和纠正重试链路，不计入正式实验。
 - [分工进度、验收清单与提交记录](docs/evaluation-coordination.md)
 - [博客整合稿、开发时间估计与模型选型建议](docs/evaluation-blog.md)
 
+## 郭昱祺交付材料
+
+- [个人交付与剩余证据](docs/guo-yuqi-delivery.md)
+- [两个模型的产品体验与改进分析](docs/guo-yuqi-product-experience.md)
+- [采访执行包（含统一四轮任务）](docs/guo-yuqi-interview-kit.md)、[空白记录表](evidence/guo-yuqi-interview-template.md)
+- [产品规划、NABCD与功能优先级](docs/guo-yuqi-product-plan.md)
+- [官方页面截图与证据索引](evidence/guo-yuqi/README.md)
+
+当前已形成报告、规划及采访材料；真实学生采访、登录后的完整产品操作与第二模型对话仍待补证，详见交付索引。
+
 ## 四轮评测联调
 
 使用 `python -m llm_eval.evaluate --dry-run` 查看模型、场景、指纹和计划任务数。实际联调、实验冻结与评分参见[评测协议 v1](docs/evaluation-protocol-v1.md)。

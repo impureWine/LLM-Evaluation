@@ -1,0 +1,41 @@
+{
+  "checked_on": "2026-11-09",
+  "api_calls": 0,
+  "scope": "documentation links, evidence integrity and reported historical smoke facts",
+  "documents_checked": 10,
+  "local_links_checked": 118,
+  "broken_links": [],
+  "jpeg_checks": [
+    {
+      "file": "glm-4.7-flash-official-2026-11-09.jpg",
+      "valid": true
+    },
+    {
+      "file": "glm-4.7-official-2026-11-09.jpg",
+      "valid": true
+    },
+    {
+      "file": "bigmodel-trial-login-2026-11-09.jpg",
+      "valid": true
+    },
+    {
+      "file": "model-overview-official-2026-11-09.jpg",
+      "valid": true
+    }
+  ],
+  "historical_smoke_review": {
+    "model": "glm-4.7-flash",
+    "latency_seconds": 89.282,
+    "total_tokens": 2456,
+    "candidate_evidence_ids": [
+      "smoke-car-001",
+      "smoke-car-002"
+    ],
+    "next_question": "您更倾向于纯电车型（A）还是插电混动车型（B）？或者您对车辆的续航里程有特殊要求吗？",
+    "formal_evaluation": false
+  },
+  "manifest_hashes_checked": 8,
+  "task_card_vehicle_rows_checked": 5,
+  "interview_template_status": "blank_not_conducted",
+  "hash_normalization": "utf8_lf for text; raw_bytes for JPEG"
+}

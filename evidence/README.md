@@ -1,5 +1,9 @@
 # 模型接入证据
 
+## 郭昱祺的体验及采访材料
+
+[页面证据索引](guo-yuqi/README.md)保存2026-11-09官方功能页、登录入口截图及原始页面文本；[空白采访表](guo-yuqi-interview-template.md)配合[采访执行包](../docs/guo-yuqi-interview-kit.md)使用。目前没有真实采访或GLM-4.7成功对话，页面图片不计入模型运行或采访完成数。
+
 ## 当前：智谱 GLM-4.7-Flash
 
 - `zhipu-glm-4.7-flash-smoke-2026-11-07.json`：关闭思考模式前的完整请求超时记录。

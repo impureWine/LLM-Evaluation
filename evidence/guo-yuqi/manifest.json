@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "prepared_by": "郭昱祺（102400413）",
+  "recorded_on": "2026-11-09",
+  "timezone": "Asia/Shanghai",
+  "base_commit": "e8c97e422f2c4c23cea4802e81f8fdf36dcab53c",
+  "formal_evaluation": false,
+  "new_model_api_calls": 0,
+  "interview_status": "not_conducted",
+  "screenshots_are": "official pages and an unauthenticated login page; not model conversations or participant photos",
+  "captures": [
+    {
+      "path": "evidence/guo-yuqi/glm-4.7-flash-official-2026-11-09.jpg",
+      "bytes": 36501,
+      "sha256": "a1d415639e666178cef1e407bb25c0865ba910f34e354b63ae9a118a63658c59",
+      "type": "official_page_screenshot",
+      "url": "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.7-flash",
+      "accessed_on": "2026-11-09",
+      "hash_mode": "raw_bytes"
+    },
+    {
+      "path": "evidence/guo-yuqi/glm-4.7-official-2026-11-09.jpg",
+      "bytes": 69857,
+      "sha256": "ed6c22de1e759af4f2a53231378cbef30a182278d62fe9fa6647c7ffe0166a38",
+      "type": "official_page_screenshot",
+      "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+      "accessed_on": "2026-11-09",
+      "hash_mode": "raw_bytes"
+    },
+    {
+      "path": "evidence/guo-yuqi/bigmodel-trial-login-2026-11-09.jpg",
+      "bytes": 32307,
+      "sha256": "154bfe380224505fa9afec2444eeb258c2e7456e468ab56b240dc2fa11d422ff",
+      "type": "unauthenticated_login_screenshot",
+      "url": "https://bigmodel.cn/login?redirect=%2Ftrialcenter%2Fmodeltrial%2Ftext%3FmodelCode%3Dglm-4.7-flash",
+      "accessed_on": "2026-11-09",
+      "hash_mode": "raw_bytes"
+    },
+    {
+      "path": "evidence/guo-yuqi/model-overview-official-2026-11-09.jpg",
+      "bytes": 59819,
+      "sha256": "f27235c91b4d3f47c6b3484798dcafac830da02492e1a2e538b27d3820348570",
+      "type": "official_directory_screenshot",
+      "url": "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+      "accessed_on": "2026-11-09",
+      "hash_mode": "raw_bytes"
+    },
+    {
+      "path": "evidence/guo-yuqi/glm-4.7-flash-official-page.txt",
+      "bytes": 11466,
+      "sha256": "c2b5a6c15443287cb34a90f094a627864b3e14341d5c42e814f01fa12ccd977f",
+      "type": "official_page_dom_snapshot",
+      "url": "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.7-flash",
+      "accessed_on": "2026-11-09",
+      "hash_mode": "utf8_lf"
+    },
+    {
+      "path": "evidence/guo-yuqi/glm-4.7-official-page.txt",
+      "bytes": 16041,
+      "sha256": "feb2ed85f733ae0f80dd6d2dde9f00ebdb05cc2e2c5eef70e13ac781aa074396",
+      "type": "official_page_dom_snapshot",
+      "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+      "accessed_on": "2026-11-09",
+      "hash_mode": "utf8_lf"
+    },
+    {
+      "path": "evidence/guo-yuqi/assignment-experience-requirements.txt",
+      "bytes": 19784,
+      "sha256": "b15f3cf14f6294ccf1bc49f2eb59a04415aeb3771ce380b184b123b3cc814756",
+      "type": "assignment_visible_text",
+      "url": "https://bbs.csdn.net/topics/620578230",
+      "accessed_on": "2026-11-09",
+      "hash_mode": "utf8_lf"
+    }
+  ],
+  "existing_model_evidence": [
+    {
+      "path": "evidence/zhipu-glm-4.7-flash-smoke-success-2026-11-07.json",
+      "bytes": 12463,
+      "sha256": "78e0914d33abc34364258b36fc064ab3efacc479f1efeccc7407e690097f923b",
+      "type": "historical_smoke_review",
+      "recorded_on": "2026-11-07",
+      "formal_evaluation": false,
+      "hash_mode": "utf8_lf"
+    }
+  ],
+  "hash_normalization": {
+    "text": "UTF-8 bytes after replacing CRLF and CR line endings with LF; bytes is normalized byte length",
+    "binary": "original bytes; no normalization"
+  }
+}
