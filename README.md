@@ -120,3 +120,26 @@ python -m llm_eval.dataset
 
 该命令核对来源、参考集合、约束变更、脚本与运行器一致性、答案隔离及输入指纹。
 材料状态是“供团队冻结审核”，不是正式模型运行或团队审批的完成记录。
+
+## 关欣交付材料
+
+- [评分细则、判定口径与冻结记录](docs/evaluation-protocol-v1.md)
+- [规则评分实现](src/llm_eval/scoring.py)、[离线评分测试](tests/test_scoring.py)
+- [边界案例 C1：结构通过但追问含两个问题](docs/case-c1-question-count.md)
+- [边界案例 C2：需求变更后的预算边界与无解表达](docs/case-c2-budget-boundary.md)、[边界回归测试](tests/test_boundary_change.py)
+- [现实影响与工程改进（博客第二部分正文）](docs/reality-impact-and-bug-analysis.md)
+- [公开材料脱敏检查记录](docs/desensitization-check.md)
+
+评分在正式运行后离线执行，不消耗 API 额度：
+
+```powershell
+$env:PYTHONPATH = 'src'
+python -m llm_eval.scoring --runs runs/<批次>
+# 人工复核 review-queue.csv 并回填 verdict 后重算
+python -m llm_eval.scoring --runs runs/<批次> --review runs/<批次>/scores/review-queue.csv
+```
+
+`scores.csv` 为逐次分数、失败项与最终推荐车型，`summary.csv`、`summary.md` 为模型×场景汇总
+（含推荐分布），`review-queue.csv` 为人工判定项：`blocking` 缺证据待判、`override` 可改判，
+`review-hints.csv` 只作复核提示、不影响分数。
+评分细则、评分实现与参照数据须同批冻结，改动按协议第 10 节升版本并重算指纹。
