@@ -133,6 +133,7 @@ python -m llm_eval.dataset
 - [边界案例 C1：结构通过但追问含两个问题](docs/case-c1-question-count.md)
 - [边界案例 C2：需求变更后的预算边界与无解表达](docs/case-c2-budget-boundary.md)、[边界回归测试](tests/test_boundary_change.py)
 - [现实影响与工程改进（博客第二部分正文）](docs/reality-impact-and-bug-analysis.md)
+- [回填清单：正式批次到位后要改什么](docs/backfill-checklist.md)
 - [公开材料脱敏检查记录](docs/desensitization-check.md)
 
 评分在正式运行后离线执行，不消耗 API 额度：
