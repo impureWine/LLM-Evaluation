@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 from dataclasses import dataclass
 from typing import Any, List, Mapping, Optional, Tuple
 
@@ -20,6 +21,7 @@ TOP_LEVEL_FIELDS = {
     "turn_summary",
     "effective_constraints",
     "candidate_cars",
+    "parameter_comparison",
     "final_recommendation",
     "next_question",
     "confidence",
@@ -38,6 +40,9 @@ CANDIDATE_FIELDS = {
     "evidence_ids",
 }
 RECOMMENDATION_FIELDS = {"model", "trim", "year", "reason", "tradeoffs"}
+COMPARISON_FIELDS = {
+    "source_id", "model", "trim", "year", "price_wan", "energy", "seats", "adas"
+}
 
 
 def parse_decision_output(content: str) -> Tuple[Optional[Mapping[str, Any]], List[ValidationIssue]]:
@@ -92,6 +97,13 @@ def validate_decision_output(value: Any) -> List[ValidationIssue]:
     else:
         for index, item in enumerate(candidates):
             _validate_candidate(item, "$.candidate_cars[{}]".format(index), issues)
+
+    comparisons = value.get("parameter_comparison")
+    if not isinstance(comparisons, list):
+        issues.append(ValidationIssue("$.parameter_comparison", "must be an array"))
+    else:
+        for index, item in enumerate(comparisons):
+            _validate_comparison(item, "$.parameter_comparison[{}]".format(index), issues)
 
     recommendation = value.get("final_recommendation")
     if recommendation is not None:
@@ -223,4 +235,26 @@ def _validate_recommendation(
     if isinstance(year, bool) or not isinstance(year, int):
         issues.append(ValidationIssue(path + ".year", "must be an integer"))
     _string_array(item, "tradeoffs", path, issues)
+
+
+def _validate_comparison(
+    item: Any,
+    path: str,
+    issues: List[ValidationIssue],
+) -> None:
+    if not isinstance(item, Mapping):
+        issues.append(ValidationIssue(path, "must be an object"))
+        return
+    _check_fields(item, COMPARISON_FIELDS, path, issues)
+    for field in ("source_id", "model", "trim", "energy", "adas"):
+        _nonempty_string(item, field, path, issues)
+    year = item.get("year")
+    if isinstance(year, bool) or not isinstance(year, int):
+        issues.append(ValidationIssue(path + ".year", "must be an integer"))
+    price = item.get("price_wan")
+    if isinstance(price, bool) or not isinstance(price, (int, float)) or not math.isfinite(price) or price < 0:
+        issues.append(ValidationIssue(path + ".price_wan", "must be a finite non-negative number"))
+    seats = item.get("seats")
+    if isinstance(seats, bool) or not isinstance(seats, int) or seats < 1:
+        issues.append(ValidationIssue(path + ".seats", "must be a positive integer"))
 

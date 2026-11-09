@@ -1,5 +1,5 @@
 {
-  "version": "v1",
+  "version": "v1.1-candidate",
   "model_keys": ["zhipu_glm_47_flash", "zhipu_glm_47"],
   "repetitions": 3,
   "vehicle_data": [

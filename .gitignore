@@ -10,5 +10,6 @@ htmlcov/
 .vscode/
 *.log
 runs/
+evidence/results/
 local/
 

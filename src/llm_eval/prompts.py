@@ -56,7 +56,7 @@ class PromptBundle:
     followup_user_template: str
     output_schema_text: str
     fingerprint: str
-    version: str = "v1"
+    version: str = "v1.1-candidate"
 
     @classmethod
     def from_directory(cls, directory: Optional[Path] = None) -> "PromptBundle":

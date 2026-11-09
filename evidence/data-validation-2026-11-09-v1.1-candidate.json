@@ -1,0 +1,77 @@
+{
+  "valid": true,
+  "api_calls": 0,
+  "vehicle_count": 5,
+  "scenario_count": 3,
+  "checked_turns": 12,
+  "release_status": "prepared_for_team_freeze",
+  "input_hashes": {
+    "configs/evaluation-v1.json": "de1661dabaf3bee8ab464f5b8f02bb134331679fc250fc275113cc6ef51a8ce4",
+    "configs/scenario-rules-v1.json": "fbce764db08e0299c20b2df61783df9e95ccf28e480b65659a4dff82c7c6ec3b",
+    "data/vehicle-sources-v1.json": "4ce0e17fa6195dffa53a4bccefbb2b905771599cb3d65c8d5955ca56ae7a62f7",
+    "data/reference-answers-v1.json": "f23263e2b75a684c2f44663f00147f5b1ef8e11343005cd7735365c50760dd2a",
+    "configs/models.json": "d46ea63c32dd1f06b19464dfc3388a8501ac96332e62fc59bfddd938ecebbd86",
+    "prompts/system_v1.md": "8e660fb9d1b47794444fed891bbc3ca277e3d9185754835182417dd62ee70422",
+    "prompts/initial_user_v1.md": "8919901eeab57c5e5db383e07d786a48acbef895ca59a001b97c3b1e964111ad",
+    "prompts/followup_user_v1.md": "ed1b761de323e4fda19121d33c4bb759b3ee9d21a734ca4208c2e7106336145f",
+    "prompts/output_schema_v1.json": "aaa393f215c4b4f0e7492a2c72b62941cdabe5eabedf06ee7cc5d11ca456fdfa",
+    "docs/evaluation-protocol-v1.md": "9bb78e0330f2e98e6c963cc1f52961b1e32e1fa28fb784403c8f270c9ce3fa98"
+  },
+  "checks": [
+    "vehicle_schema_and_provenance",
+    "constraint_reference_sets",
+    "runner_script_equivalence",
+    "reference_not_sent_to_models",
+    "release_fingerprints"
+  ],
+  "eligible_by_scenario": {
+    "city": [
+      [
+        "SIM-A",
+        "SIM-E"
+      ],
+      [
+        "SIM-A",
+        "SIM-E"
+      ],
+      [
+        "SIM-A",
+        "SIM-E"
+      ],
+      [
+        "SIM-A",
+        "SIM-E"
+      ]
+    ],
+    "family": [
+      [
+        "SIM-C",
+        "SIM-D"
+      ],
+      [
+        "SIM-C"
+      ],
+      [
+        "SIM-C"
+      ],
+      [
+        "SIM-C"
+      ]
+    ],
+    "change": [
+      [
+        "SIM-B",
+        "SIM-C"
+      ],
+      [
+        "SIM-B"
+      ],
+      [
+        "SIM-B"
+      ],
+      [
+        "SIM-B"
+      ]
+    ]
+  }
+}

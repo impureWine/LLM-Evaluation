@@ -6,6 +6,7 @@
     "turn_summary",
     "effective_constraints",
     "candidate_cars",
+    "parameter_comparison",
     "final_recommendation",
     "next_question",
     "confidence",
@@ -101,6 +102,33 @@
               "type": "string"
             }
           }
+        }
+      }
+    },
+    "parameter_comparison": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "model",
+          "trim",
+          "year",
+          "price_wan",
+          "energy",
+          "seats",
+          "adas"
+        ],
+        "properties": {
+          "source_id": { "type": "string", "minLength": 1 },
+          "model": { "type": "string", "minLength": 1 },
+          "trim": { "type": "string", "minLength": 1 },
+          "year": { "type": "integer" },
+          "price_wan": { "type": "number", "minimum": 0 },
+          "energy": { "type": "string", "minLength": 1 },
+          "seats": { "type": "integer", "minimum": 1 },
+          "adas": { "type": "string", "minLength": 1 }
         }
       }
     },

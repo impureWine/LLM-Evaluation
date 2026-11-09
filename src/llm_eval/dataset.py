@@ -176,11 +176,11 @@ def validate_inputs(root):
 
 
 def make_lock(root):
-    return {"version": "data-release-v1", "status": "prepared_for_team_freeze",
+    return {"version": "data-release-v1.1-candidate", "status": "prepared_for_team_freeze",
             "prepared_on": "2026-11-09", "maintainer": "庄剀涵（102400435）",
             "baseline_commit": "7d6e7c214459488d5310a2390cd9f0abbae3dd70",
             "hash_method": "sha256_utf8_text_bom_removed_newlines_lf",
-            "note": "材料已校验；正式实验冻结提交及团队审核由统筹记录，不能据此声明18次实验已完成。",
+            "note": "结构化参数对比契约为v1.1候选修订；材料已校验但仍待团队冻结审核，不能据此声明18次实验已完成。",
             "files": {p: text_hash(root / p) for p in LOCKED_PATHS}}
 
 

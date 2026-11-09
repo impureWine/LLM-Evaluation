@@ -4,7 +4,7 @@ import unittest
 from unittest.mock import patch
 
 from llm_eval.errors import AuthenticationConfigurationError, ModelAPIError
-from llm_eval.models import ChatMessage, ModelSpec
+from llm_eval.models import ChatMessage, ModelSpec, Usage
 from llm_eval.openai_compatible import HttpResponse, OpenAICompatibleClient
 
 
@@ -86,8 +86,14 @@ class OpenAICompatibleClientTests(unittest.TestCase):
         self.assertEqual(0.0, captured["body"]["temperature"])
         self.assertEqual("served-model", result.served_model)
         self.assertEqual(19, result.usage.total_tokens)
+        self.assertTrue(result.usage.reported)
         self.assertTrue(result.reasoning_present)
         self.assertNotIn("provider-private reasoning", result.content)
+
+    def test_missing_usage_is_not_reported_as_zero_tokens(self):
+        self.assertFalse(Usage.from_mapping(None).reported)
+        self.assertFalse(Usage.from_mapping({"prompt_tokens": 10}).reported)
+        self.assertTrue(Usage.from_mapping({"total_tokens": 0}).reported)
 
     @patch.dict(os.environ, {"TEST_MODEL_KEY": "unit-test-secret"}, clear=False)
     def test_retries_server_error_then_succeeds(self):

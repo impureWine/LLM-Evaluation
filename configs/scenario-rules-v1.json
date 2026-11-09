@@ -63,7 +63,7 @@
         {
           "turn": 3,
           "phase": "parameter_comparison",
-          "user_message": "请按车型对比有效候选的价格、能源、座位数和辅助驾驶级别。在每款候选的 why_fit 中逐项列明参数，继续保留来源编号。",
+          "user_message": "请按车型对比有效候选的价格、能源、座位数和辅助驾驶级别。在每款候选的 why_fit 中逐项列明参数，继续保留来源编号；并在 parameter_comparison 数组中逐车结构化列出 source_id、model、trim、year、price_wan、energy、seats、adas，数值必须与车型库完全一致。",
           "change_rule": ""
         },
         {
@@ -125,7 +125,7 @@
         {
           "turn": 3,
           "phase": "parameter_comparison",
-          "user_message": "请按车型对比有效候选的价格、能源、座位数和辅助驾驶级别。在每款候选的 why_fit 中逐项列明参数，继续保留来源编号。",
+          "user_message": "请按车型对比有效候选的价格、能源、座位数和辅助驾驶级别。在每款候选的 why_fit 中逐项列明参数，继续保留来源编号；并在 parameter_comparison 数组中逐车结构化列出 source_id、model、trim、year、price_wan、energy、seats、adas，数值必须与车型库完全一致。",
           "change_rule": ""
         },
         {
@@ -194,7 +194,7 @@
         {
           "turn": 3,
           "phase": "parameter_comparison",
-          "user_message": "请按车型对比有效候选的价格、能源、座位数和辅助驾驶级别。在每款候选的 why_fit 中逐项列明参数，继续保留来源编号。",
+          "user_message": "请按车型对比有效候选的价格、能源、座位数和辅助驾驶级别。在每款候选的 why_fit 中逐项列明参数，继续保留来源编号；并在 parameter_comparison 数组中逐车结构化列出 source_id、model、trim、year、price_wan、energy、seats、adas，数值必须与车型库完全一致。",
           "change_rule": ""
         },
         {

@@ -43,6 +43,7 @@ def valid_payload():
                 "evidence_ids": ["car-1"],
             }
         ],
+        "parameter_comparison": [],
         "final_recommendation": {
             "model": "示例车",
             "trim": "基础版",

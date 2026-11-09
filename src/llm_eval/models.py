@@ -31,6 +31,7 @@ class Usage:
     prompt_tokens: int = 0
     completion_tokens: int = 0
     total_tokens: int = 0
+    reported: bool = False
 
     @classmethod
     def from_mapping(cls, value: Optional[Mapping[str, Any]]) -> "Usage":
@@ -40,6 +41,11 @@ class Usage:
             prompt_tokens=_safe_int(value.get("prompt_tokens")),
             completion_tokens=_safe_int(value.get("completion_tokens")),
             total_tokens=_safe_int(value.get("total_tokens")),
+            reported=(
+                "total_tokens" in value
+                and value.get("total_tokens") is not None
+                and _safe_int(value.get("total_tokens")) >= 0
+            ),
         )
 
     def as_dict(self) -> Dict[str, int]:
@@ -47,6 +53,7 @@ class Usage:
             "prompt_tokens": self.prompt_tokens,
             "completion_tokens": self.completion_tokens,
             "total_tokens": self.total_tokens,
+            "reported": self.reported,
         }
 
 

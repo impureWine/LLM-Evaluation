@@ -27,6 +27,7 @@ def valid_output():
                 "evidence_ids": ["car-1"],
             }
         ],
+        "parameter_comparison": [],
         "final_recommendation": {
             "model": "测试车型",
             "trim": "舒适版",
@@ -69,6 +70,12 @@ class SchemaValidationTests(unittest.TestCase):
         value["candidate_cars"][0]["evidence_ids"] = []
         issues = validate_decision_output(value)
         self.assertTrue(any("evidence_ids" in str(issue) for issue in issues))
+
+    def test_rejects_malformed_parameter_comparison(self):
+        value = valid_output()
+        value["parameter_comparison"] = [{"source_id": "car-1", "seats": True}]
+        issues = validate_decision_output(value)
+        self.assertTrue(any("parameter_comparison" in str(issue) for issue in issues))
 
 
 if __name__ == "__main__":

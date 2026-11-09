@@ -37,6 +37,7 @@ class StructuredResult:
                 result.usage.completion_tokens for result in self.all_results
             ),
             total_tokens=sum(result.usage.total_tokens for result in self.all_results),
+            reported=bool(self.all_results) and all(result.usage.reported for result in self.all_results),
         )
 
     @property

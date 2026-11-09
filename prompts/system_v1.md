@@ -18,7 +18,8 @@
 字段补充约定：
 
 - effective_constraints 中每项必须写明来源轮次；本轮仍有效的写 active，被后续需求替换的写 superseded。
-- candidate_cars 最多 5 项。evidence_ids 只填写车型库中实际存在的来源编号。
+- candidate_cars 最多 5 项。每个候选只填写与其车型、配置和年份完全匹配的一个 evidence_id。
+- parameter_comparison 仅在第 3 轮填写；按每个候选车型逐项抄录 source_id、车型、配置、年份、价格、能源、座位数和辅助驾驶级别，必须与车型库完全一致。其他轮次填空数组。不得猜测车型库未提供的字段。
 - 如果当前信息足以决策，final_recommendation 必须非空且 next_question 为 null。
 - 如果缺少影响硬约束的关键信息，final_recommendation 可为 null，但 next_question 必须是单个具体问题。
 - status 在候选比较阶段填 candidate_only，在最终推荐阶段填 final。

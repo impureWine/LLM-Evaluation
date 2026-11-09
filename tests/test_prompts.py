@@ -26,7 +26,7 @@ class PromptBundleTests(unittest.TestCase):
         second = PromptBundle.from_directory()
         self.assertEqual(first.fingerprint, second.fingerprint)
         self.assertEqual(64, len(first.fingerprint))
-        self.assertEqual("v1", first.public_fingerprint()["prompt_version"])
+        self.assertEqual("v1.1-candidate", first.public_fingerprint()["prompt_version"])
 
     def test_followup_preserves_turn_and_user_change(self):
         bundle = PromptBundle.from_directory()

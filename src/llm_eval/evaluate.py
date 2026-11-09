@@ -10,6 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from llm_eval.config import load_model_registry, project_root
+from llm_eval.comparison import audit_parameter_comparison
 from llm_eval.env import load_local_env
 from llm_eval.errors import LLMEvaluationError
 from llm_eval.models import ChatMessage
@@ -24,7 +25,9 @@ def scenario_messages(bundle, scenario, vehicles):
     followups = [
         (scenario["second_turn"], scenario["change_rule"]),
         ("请按车型对比有效候选的价格、能源、座位数和辅助驾驶级别。"
-         "在每款候选的 why_fit 中逐项列明参数，继续保留来源编号。", ""),
+         "在每款候选的 why_fit 中逐项列明参数，继续保留来源编号；"
+         "并在 parameter_comparison 数组中逐车结构化列出 source_id、model、trim、year、"
+         "price_wan、energy、seats、adas，数值必须与车型库完全一致。", ""),
         ("请从仍符合约束的候选中选出一款。返回最终推荐、理由与取舍。", ""),
     ]
     return bundle.initial_messages(initial, vehicles), [
@@ -33,7 +36,7 @@ def scenario_messages(bundle, scenario, vehicles):
     ]
 
 
-def run_task(client, spec, initial, followups):
+def run_task(client, spec, initial, followups, vehicle_data):
     messages = list(initial)
     turns = []
     started = time.monotonic()
@@ -45,14 +48,30 @@ def run_task(client, spec, initial, followups):
         except LLMEvaluationError as exc:
             turns.append({"turn": turn, "valid": False, "error_type": type(exc).__name__})
             break
-        turns.append({"turn": turn, **result.as_record()})
+        turn_record = {"turn": turn, **result.as_record()}
+        payload = result.payload or {}
+        comparisons = payload.get("parameter_comparison", [])
+        if turn == 3:
+            issues = audit_parameter_comparison(payload, vehicle_data)
+        else:
+            issues = [] if comparisons == [] else ["parameter_comparison must be empty outside turn 3"]
+        turn_record["comparison_audit"] = {
+            "passed": not issues,
+            "issues": issues,
+            "checked_rows": len(comparisons) if isinstance(comparisons, list) else 0,
+        }
+        turns.append(turn_record)
         if not result.valid:
             break
         messages.append(ChatMessage(role="assistant", content=result.final.content))
     return {
         "turns": turns,
         "elapsed_ms": round((time.monotonic() - started) * 1000),
-        "completed": len(turns) == 4 and all(t["valid"] for t in turns),
+        "output_contract_completed": len(turns) == 4 and all(
+            turn.get("valid") is True
+            and turn.get("comparison_audit", {}).get("passed") is True
+            for turn in turns
+        ),
     }
 
 
@@ -104,16 +123,17 @@ def main():
     client = SchemaValidatedDecisionClient(OpenAICompatibleClient(), bundle)
     batch = root / "runs" / uuid.uuid4().hex
     batch.mkdir(parents=True)
-    completed = 0
+    contract_completed = 0
     for spec in specs:
         for scenario_id, initial, followups in tasks:
             for repetition in range(1, repetitions + 1):
                 run_id = f"{spec.key}-{scenario_id}-{repetition}"
                 started_at = datetime.now(timezone.utc).isoformat()
-                result = run_task(client, spec, initial, followups)
+                result = run_task(client, spec, initial, followups, design["vehicle_data"])
                 record = {
                     **provenance,
                     "run_id": run_id,
+                    "model_key": spec.key,
                     "started_at": started_at,
                     "scenario_id": scenario_id,
                     "repetition": repetition,
@@ -126,10 +146,10 @@ def main():
                 (batch / f"{run_id}.json").write_text(
                     json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8"
                 )
-                completed += result["completed"]
+                contract_completed += result["output_contract_completed"]
     planned = len(tasks) * len(specs) * repetitions
-    print(f"{completed}/{planned} completed: {batch}")
-    return 0 if completed == planned else 2
+    print(f"{contract_completed}/{planned} four-turn output contracts completed: {batch}")
+    return 0 if contract_completed == planned else 2
 
 
 if __name__ == "__main__":

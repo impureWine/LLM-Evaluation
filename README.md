@@ -86,6 +86,7 @@ JSON 模式、Schema 校验和纠正重试链路，不计入正式实验。
 
 - [分工进度、验收清单与提交记录](docs/evaluation-coordination.md)
 - [博客整合稿、开发时间估计与模型选型建议](docs/evaluation-blog.md)
+- [程杰结果提取与图表说明](docs/results-report.md)
 
 ## 郭昱祺交付材料
 
@@ -100,6 +101,10 @@ JSON 模式、Schema 校验和纠正重试链路，不计入正式实验。
 ## 四轮评测联调
 
 使用 `python -m llm_eval.evaluate --dry-run` 查看模型、场景、指纹和计划任务数。实际联调、实验冻结与评分参见[评测协议 v1](docs/evaluation-protocol-v1.md)。
+
+## 结果提取
+
+正式批次运行后，使用 `python -m llm_eval.report` 从 `runs/` 导出初选候选、第三轮参数对比、最终推荐、逐次运行摘要及模型汇总表，并生成完成率图。该命令不调用模型；冒烟和联调批次不会混入正式结果。输出字段及口径见[结果提取说明](docs/results-report.md)。
 
 ## 庄剀涵交付材料
 
