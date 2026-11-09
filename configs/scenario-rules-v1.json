@@ -1,0 +1,212 @@
+{
+  "version": "scenario-rules-v1",
+  "maintainer": "庄剀涵（102400435）",
+  "prepared_on": "2026-11-09",
+  "canonical_runtime_manifest": "configs/evaluation-v1.json",
+  "turns_per_task": 4,
+  "budget_semantics": "price_wan <= budget；裸车预算；包含上限。",
+  "update_semantics": "事件在发出该轮用户消息时立即生效；add 保留全部旧条件；replace 将同 id 的旧条件标为 superseded；第3、4轮继承第2轮。",
+  "reference_visibility": "仅供核验与评分；不得把参考答案、排除原因或本规则文件整体发送给被测模型。",
+  "scenarios": [
+    {
+      "id": "city",
+      "purpose": "城市通勤，检验多候选保留与新增辅助驾驶要求。",
+      "initial_constraints": [
+        {
+          "id": "budget",
+          "field": "price_wan",
+          "operator": "lte",
+          "value": 18,
+          "source_turn": 1
+        },
+        {
+          "id": "energy",
+          "field": "energy",
+          "operator": "eq",
+          "value": "纯电",
+          "source_turn": 1
+        },
+        {
+          "id": "seats",
+          "field": "seats",
+          "operator": "gte",
+          "value": 5,
+          "source_turn": 1
+        }
+      ],
+      "events": [
+        {
+          "turn": 2,
+          "action": "add",
+          "constraint": {
+            "id": "adas",
+            "field": "adas",
+            "operator": "eq",
+            "value": "L2",
+            "source_turn": 2
+          }
+        }
+      ],
+      "turn_scripts": [
+        {
+          "turn": 1,
+          "phase": "initial_candidates",
+          "user_message": "城市通勤，预算最高18万元，必须纯电、至少5座。先列出候选。",
+          "change_rule": ""
+        },
+        {
+          "turn": 2,
+          "phase": "update_constraints",
+          "user_message": "仍按原条件，必须具备 L2 辅助驾驶。请更新候选。",
+          "change_rule": "本轮新增 L2，保留预算、能源和座位限制。"
+        },
+        {
+          "turn": 3,
+          "phase": "parameter_comparison",
+          "user_message": "请按车型对比有效候选的价格、能源、座位数和辅助驾驶级别。在每款候选的 why_fit 中逐项列明参数，继续保留来源编号。",
+          "change_rule": ""
+        },
+        {
+          "turn": 4,
+          "phase": "final_recommendation",
+          "user_message": "请从仍符合约束的候选中选出一款。返回最终推荐、理由与取舍。",
+          "change_rule": ""
+        }
+      ],
+      "soft_preferences": [
+        "用途只用于解释，不推导未提供的续航、舒适性或可靠性。"
+      ]
+    },
+    {
+      "id": "family",
+      "purpose": "家庭出行，检验七座硬约束与能源类型的交集。",
+      "initial_constraints": [
+        {
+          "id": "budget",
+          "field": "price_wan",
+          "operator": "lte",
+          "value": 24,
+          "source_turn": 1
+        },
+        {
+          "id": "seats",
+          "field": "seats",
+          "operator": "gte",
+          "value": 7,
+          "source_turn": 1
+        }
+      ],
+      "events": [
+        {
+          "turn": 2,
+          "action": "add",
+          "constraint": {
+            "id": "energy",
+            "field": "energy",
+            "operator": "eq",
+            "value": "插电混动",
+            "source_turn": 2
+          }
+        }
+      ],
+      "turn_scripts": [
+        {
+          "turn": 1,
+          "phase": "initial_candidates",
+          "user_message": "家庭出行，预算最高24万元，至少7座。先列出候选。",
+          "change_rule": ""
+        },
+        {
+          "turn": 2,
+          "phase": "update_constraints",
+          "user_message": "必须是插电混动。请保留预算和座位数要求，更新候选。",
+          "change_rule": "本轮新增插电混动，保留预算和座位限制。"
+        },
+        {
+          "turn": 3,
+          "phase": "parameter_comparison",
+          "user_message": "请按车型对比有效候选的价格、能源、座位数和辅助驾驶级别。在每款候选的 why_fit 中逐项列明参数，继续保留来源编号。",
+          "change_rule": ""
+        },
+        {
+          "turn": 4,
+          "phase": "final_recommendation",
+          "user_message": "请从仍符合约束的候选中选出一款。返回最终推荐、理由与取舍。",
+          "change_rule": ""
+        }
+      ],
+      "soft_preferences": [
+        "用途只用于解释，不推导未提供的续航、舒适性或可靠性。"
+      ]
+    },
+    {
+      "id": "change",
+      "purpose": "周末跨城，检验预算被替换后的重新筛选与原有条件保留。",
+      "initial_constraints": [
+        {
+          "id": "budget",
+          "field": "price_wan",
+          "operator": "lte",
+          "value": 24,
+          "source_turn": 1
+        },
+        {
+          "id": "seats",
+          "field": "seats",
+          "operator": "gte",
+          "value": 5,
+          "source_turn": 1
+        },
+        {
+          "id": "energy",
+          "field": "energy",
+          "operator": "eq",
+          "value": "插电混动",
+          "source_turn": 1
+        }
+      ],
+      "events": [
+        {
+          "turn": 2,
+          "action": "replace",
+          "constraint": {
+            "id": "budget",
+            "field": "price_wan",
+            "operator": "lte",
+            "value": 19,
+            "source_turn": 2
+          }
+        }
+      ],
+      "turn_scripts": [
+        {
+          "turn": 1,
+          "phase": "initial_candidates",
+          "user_message": "周末跨城，预算最高24万元，至少5座，必须插电混动。先列出候选。",
+          "change_rule": ""
+        },
+        {
+          "turn": 2,
+          "phase": "update_constraints",
+          "user_message": "预算上限改为19万元，其余要求保留。请更新候选。",
+          "change_rule": "19万元从本轮取代24万元，能源和座位限制仍生效。"
+        },
+        {
+          "turn": 3,
+          "phase": "parameter_comparison",
+          "user_message": "请按车型对比有效候选的价格、能源、座位数和辅助驾驶级别。在每款候选的 why_fit 中逐项列明参数，继续保留来源编号。",
+          "change_rule": ""
+        },
+        {
+          "turn": 4,
+          "phase": "final_recommendation",
+          "user_message": "请从仍符合约束的候选中选出一款。返回最终推荐、理由与取舍。",
+          "change_rule": ""
+        }
+      ],
+      "soft_preferences": [
+        "用途只用于解释，不推导未提供的续航、舒适性或可靠性。"
+      ]
+    }
+  ]
+}

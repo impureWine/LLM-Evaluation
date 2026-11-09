@@ -1,0 +1,18 @@
+{
+  "protocol": "v1",
+  "manifest_sha256": "4745c929619a3575771d7ff7c304d6ca067efa171e638ef689aecd36636c4ddc",
+  "prompt_sha256": "4ffc5f7ddcac9c3aa1e03a1f33ddb9931418d93c418c573113f0c8bcf4acd811",
+  "scoring_sha256": "f0a07ca8453679980c3ae1d5be74ade9656652369dde3ea7b1dfa089c4825242",
+  "models": [
+    "glm-4.7-flash",
+    "glm-4.7"
+  ],
+  "scenarios": [
+    "city",
+    "family",
+    "change"
+  ],
+  "planned_tasks": 18,
+  "turns_per_task": 4,
+  "api_calls": 0
+}

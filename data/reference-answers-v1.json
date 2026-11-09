@@ -1,0 +1,753 @@
+{
+  "version": "reference-answers-v1",
+  "data_kind": "teaching_simulation",
+  "visibility": "scoring_only",
+  "tie_policy": "任一合格车型均可作为最终推荐；不强制唯一最优。",
+  "scenarios": [
+    {
+      "scenario_id": "city",
+      "turns": [
+        {
+          "turn": 1,
+          "constraints": [
+            {
+              "id": "budget",
+              "field": "price_wan",
+              "operator": "lte",
+              "value": 18,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "energy",
+              "field": "energy",
+              "operator": "eq",
+              "value": "纯电",
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "seats",
+              "field": "seats",
+              "operator": "gte",
+              "value": 5,
+              "source_turn": 1,
+              "status": "active"
+            }
+          ],
+          "eligible_source_ids": [
+            "SIM-A",
+            "SIM-E"
+          ],
+          "excluded": [
+            {
+              "source_id": "SIM-B",
+              "failed_constraints": [
+                "budget",
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-C",
+              "failed_constraints": [
+                "budget",
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-D",
+              "failed_constraints": [
+                "budget",
+                "energy"
+              ]
+            }
+          ]
+        },
+        {
+          "turn": 2,
+          "constraints": [
+            {
+              "id": "budget",
+              "field": "price_wan",
+              "operator": "lte",
+              "value": 18,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "energy",
+              "field": "energy",
+              "operator": "eq",
+              "value": "纯电",
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "seats",
+              "field": "seats",
+              "operator": "gte",
+              "value": 5,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "adas",
+              "field": "adas",
+              "operator": "eq",
+              "value": "L2",
+              "source_turn": 2,
+              "status": "active"
+            }
+          ],
+          "eligible_source_ids": [
+            "SIM-A",
+            "SIM-E"
+          ],
+          "excluded": [
+            {
+              "source_id": "SIM-B",
+              "failed_constraints": [
+                "budget",
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-C",
+              "failed_constraints": [
+                "budget",
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-D",
+              "failed_constraints": [
+                "budget",
+                "energy",
+                "adas"
+              ]
+            }
+          ]
+        },
+        {
+          "turn": 3,
+          "constraints": [
+            {
+              "id": "budget",
+              "field": "price_wan",
+              "operator": "lte",
+              "value": 18,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "energy",
+              "field": "energy",
+              "operator": "eq",
+              "value": "纯电",
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "seats",
+              "field": "seats",
+              "operator": "gte",
+              "value": 5,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "adas",
+              "field": "adas",
+              "operator": "eq",
+              "value": "L2",
+              "source_turn": 2,
+              "status": "active"
+            }
+          ],
+          "eligible_source_ids": [
+            "SIM-A",
+            "SIM-E"
+          ],
+          "excluded": [
+            {
+              "source_id": "SIM-B",
+              "failed_constraints": [
+                "budget",
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-C",
+              "failed_constraints": [
+                "budget",
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-D",
+              "failed_constraints": [
+                "budget",
+                "energy",
+                "adas"
+              ]
+            }
+          ]
+        },
+        {
+          "turn": 4,
+          "constraints": [
+            {
+              "id": "budget",
+              "field": "price_wan",
+              "operator": "lte",
+              "value": 18,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "energy",
+              "field": "energy",
+              "operator": "eq",
+              "value": "纯电",
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "seats",
+              "field": "seats",
+              "operator": "gte",
+              "value": 5,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "adas",
+              "field": "adas",
+              "operator": "eq",
+              "value": "L2",
+              "source_turn": 2,
+              "status": "active"
+            }
+          ],
+          "eligible_source_ids": [
+            "SIM-A",
+            "SIM-E"
+          ],
+          "excluded": [
+            {
+              "source_id": "SIM-B",
+              "failed_constraints": [
+                "budget",
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-C",
+              "failed_constraints": [
+                "budget",
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-D",
+              "failed_constraints": [
+                "budget",
+                "energy",
+                "adas"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "family",
+      "turns": [
+        {
+          "turn": 1,
+          "constraints": [
+            {
+              "id": "budget",
+              "field": "price_wan",
+              "operator": "lte",
+              "value": 24,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "seats",
+              "field": "seats",
+              "operator": "gte",
+              "value": 7,
+              "source_turn": 1,
+              "status": "active"
+            }
+          ],
+          "eligible_source_ids": [
+            "SIM-C",
+            "SIM-D"
+          ],
+          "excluded": [
+            {
+              "source_id": "SIM-A",
+              "failed_constraints": [
+                "seats"
+              ]
+            },
+            {
+              "source_id": "SIM-B",
+              "failed_constraints": [
+                "seats"
+              ]
+            },
+            {
+              "source_id": "SIM-E",
+              "failed_constraints": [
+                "seats"
+              ]
+            }
+          ]
+        },
+        {
+          "turn": 2,
+          "constraints": [
+            {
+              "id": "budget",
+              "field": "price_wan",
+              "operator": "lte",
+              "value": 24,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "seats",
+              "field": "seats",
+              "operator": "gte",
+              "value": 7,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "energy",
+              "field": "energy",
+              "operator": "eq",
+              "value": "插电混动",
+              "source_turn": 2,
+              "status": "active"
+            }
+          ],
+          "eligible_source_ids": [
+            "SIM-C"
+          ],
+          "excluded": [
+            {
+              "source_id": "SIM-A",
+              "failed_constraints": [
+                "seats",
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-B",
+              "failed_constraints": [
+                "seats"
+              ]
+            },
+            {
+              "source_id": "SIM-D",
+              "failed_constraints": [
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-E",
+              "failed_constraints": [
+                "seats",
+                "energy"
+              ]
+            }
+          ]
+        },
+        {
+          "turn": 3,
+          "constraints": [
+            {
+              "id": "budget",
+              "field": "price_wan",
+              "operator": "lte",
+              "value": 24,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "seats",
+              "field": "seats",
+              "operator": "gte",
+              "value": 7,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "energy",
+              "field": "energy",
+              "operator": "eq",
+              "value": "插电混动",
+              "source_turn": 2,
+              "status": "active"
+            }
+          ],
+          "eligible_source_ids": [
+            "SIM-C"
+          ],
+          "excluded": [
+            {
+              "source_id": "SIM-A",
+              "failed_constraints": [
+                "seats",
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-B",
+              "failed_constraints": [
+                "seats"
+              ]
+            },
+            {
+              "source_id": "SIM-D",
+              "failed_constraints": [
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-E",
+              "failed_constraints": [
+                "seats",
+                "energy"
+              ]
+            }
+          ]
+        },
+        {
+          "turn": 4,
+          "constraints": [
+            {
+              "id": "budget",
+              "field": "price_wan",
+              "operator": "lte",
+              "value": 24,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "seats",
+              "field": "seats",
+              "operator": "gte",
+              "value": 7,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "energy",
+              "field": "energy",
+              "operator": "eq",
+              "value": "插电混动",
+              "source_turn": 2,
+              "status": "active"
+            }
+          ],
+          "eligible_source_ids": [
+            "SIM-C"
+          ],
+          "excluded": [
+            {
+              "source_id": "SIM-A",
+              "failed_constraints": [
+                "seats",
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-B",
+              "failed_constraints": [
+                "seats"
+              ]
+            },
+            {
+              "source_id": "SIM-D",
+              "failed_constraints": [
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-E",
+              "failed_constraints": [
+                "seats",
+                "energy"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "change",
+      "turns": [
+        {
+          "turn": 1,
+          "constraints": [
+            {
+              "id": "budget",
+              "field": "price_wan",
+              "operator": "lte",
+              "value": 24,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "seats",
+              "field": "seats",
+              "operator": "gte",
+              "value": 5,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "energy",
+              "field": "energy",
+              "operator": "eq",
+              "value": "插电混动",
+              "source_turn": 1,
+              "status": "active"
+            }
+          ],
+          "eligible_source_ids": [
+            "SIM-B",
+            "SIM-C"
+          ],
+          "excluded": [
+            {
+              "source_id": "SIM-A",
+              "failed_constraints": [
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-D",
+              "failed_constraints": [
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-E",
+              "failed_constraints": [
+                "energy"
+              ]
+            }
+          ]
+        },
+        {
+          "turn": 2,
+          "constraints": [
+            {
+              "id": "budget",
+              "field": "price_wan",
+              "operator": "lte",
+              "value": 24,
+              "source_turn": 1,
+              "status": "superseded"
+            },
+            {
+              "id": "seats",
+              "field": "seats",
+              "operator": "gte",
+              "value": 5,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "energy",
+              "field": "energy",
+              "operator": "eq",
+              "value": "插电混动",
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "budget",
+              "field": "price_wan",
+              "operator": "lte",
+              "value": 19,
+              "source_turn": 2,
+              "status": "active"
+            }
+          ],
+          "eligible_source_ids": [
+            "SIM-B"
+          ],
+          "excluded": [
+            {
+              "source_id": "SIM-A",
+              "failed_constraints": [
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-C",
+              "failed_constraints": [
+                "budget"
+              ]
+            },
+            {
+              "source_id": "SIM-D",
+              "failed_constraints": [
+                "energy",
+                "budget"
+              ]
+            },
+            {
+              "source_id": "SIM-E",
+              "failed_constraints": [
+                "energy"
+              ]
+            }
+          ]
+        },
+        {
+          "turn": 3,
+          "constraints": [
+            {
+              "id": "budget",
+              "field": "price_wan",
+              "operator": "lte",
+              "value": 24,
+              "source_turn": 1,
+              "status": "superseded"
+            },
+            {
+              "id": "seats",
+              "field": "seats",
+              "operator": "gte",
+              "value": 5,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "energy",
+              "field": "energy",
+              "operator": "eq",
+              "value": "插电混动",
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "budget",
+              "field": "price_wan",
+              "operator": "lte",
+              "value": 19,
+              "source_turn": 2,
+              "status": "active"
+            }
+          ],
+          "eligible_source_ids": [
+            "SIM-B"
+          ],
+          "excluded": [
+            {
+              "source_id": "SIM-A",
+              "failed_constraints": [
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-C",
+              "failed_constraints": [
+                "budget"
+              ]
+            },
+            {
+              "source_id": "SIM-D",
+              "failed_constraints": [
+                "energy",
+                "budget"
+              ]
+            },
+            {
+              "source_id": "SIM-E",
+              "failed_constraints": [
+                "energy"
+              ]
+            }
+          ]
+        },
+        {
+          "turn": 4,
+          "constraints": [
+            {
+              "id": "budget",
+              "field": "price_wan",
+              "operator": "lte",
+              "value": 24,
+              "source_turn": 1,
+              "status": "superseded"
+            },
+            {
+              "id": "seats",
+              "field": "seats",
+              "operator": "gte",
+              "value": 5,
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "energy",
+              "field": "energy",
+              "operator": "eq",
+              "value": "插电混动",
+              "source_turn": 1,
+              "status": "active"
+            },
+            {
+              "id": "budget",
+              "field": "price_wan",
+              "operator": "lte",
+              "value": 19,
+              "source_turn": 2,
+              "status": "active"
+            }
+          ],
+          "eligible_source_ids": [
+            "SIM-B"
+          ],
+          "excluded": [
+            {
+              "source_id": "SIM-A",
+              "failed_constraints": [
+                "energy"
+              ]
+            },
+            {
+              "source_id": "SIM-C",
+              "failed_constraints": [
+                "budget"
+              ]
+            },
+            {
+              "source_id": "SIM-D",
+              "failed_constraints": [
+                "energy",
+                "budget"
+              ]
+            },
+            {
+              "source_id": "SIM-E",
+              "failed_constraints": [
+                "energy"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,187 @@
+{
+  "version": "vehicle-sources-v1",
+  "maintainer": "庄剀涵（102400435）",
+  "data_kind": "teaching_simulation",
+  "compiled_on": "2026-11-07",
+  "verified_on": "2026-11-09",
+  "origin_note": "沿用团队协议 v1 的五款教学模拟车型；编制日期取自原协议，不是实际厂商发布日期。",
+  "canonical_data": "configs/evaluation-v1.json#/vehicle_data",
+  "baseline_commit": "7d6e7c214459488d5310a2390cd9f0abbae3dd70",
+  "price_basis": "模拟裸车价；人民币万元；不含税费、保险、上牌、金融费用、选装、补贴和终端优惠；不是落地价或实时市场报价。",
+  "field_dictionary": {
+    "source_id": {
+      "type": "string",
+      "unit": null,
+      "meaning": "唯一配置标识；关联内部模拟来源，不是外部品牌认证"
+    },
+    "model": {
+      "type": "string",
+      "unit": null,
+      "meaning": "虚构车型名称"
+    },
+    "trim": {
+      "type": "string",
+      "unit": null,
+      "meaning": "模拟配置名称"
+    },
+    "year": {
+      "type": "integer",
+      "unit": "年",
+      "meaning": "模拟款年，不是上牌年份或来源日期"
+    },
+    "price_wan": {
+      "type": "number",
+      "unit": "万元人民币",
+      "meaning": "模拟裸车价；与预算作包含边界的比较"
+    },
+    "energy": {
+      "type": "enum",
+      "unit": null,
+      "values": [
+        "纯电",
+        "插电混动",
+        "燃油"
+      ],
+      "meaning": "精确匹配标签；不把插电混动与纯电合并"
+    },
+    "seats": {
+      "type": "integer",
+      "unit": "座",
+      "meaning": "模拟座位数量，不代表第三排舒适度"
+    },
+    "adas": {
+      "type": "enum",
+      "unit": null,
+      "values": [
+        "L1",
+        "L2"
+      ],
+      "meaning": "教学辅助驾驶标签；不能推断具体功能或无人驾驶能力"
+    }
+  },
+  "unknown_fields": [
+    "真实品牌",
+    "续航里程",
+    "电池容量",
+    "油耗",
+    "充电时间",
+    "车身尺寸",
+    "后备厢容积",
+    "碰撞成绩",
+    "保值率",
+    "真实口碑"
+  ],
+  "missing_value_rule": "未提供的参数一律未知；不能以零、车型名称、能源类型或现实车型印象补齐。",
+  "sources": [
+    {
+      "source_id": "SIM-A",
+      "model": "教学车型 A",
+      "trim": "通勤版",
+      "year": 2026,
+      "source_date": "2026-11-07",
+      "accessed_on": "2026-11-09",
+      "data_kind": "teaching_simulation",
+      "source_url": "https://github.com/impureWine/LLM-Evaluation/blob/7d6e7c214459488d5310a2390cd9f0abbae3dd70/configs/evaluation-v1.json",
+      "source_locator": "vehicle_data[source_id=SIM-A]",
+      "covers_fields": [
+        "source_id",
+        "model",
+        "trim",
+        "year",
+        "price_wan",
+        "energy",
+        "seats",
+        "adas"
+      ],
+      "note": "全部参数为项目教学设定；没有对应厂商配置页；本次核对没有改动参数。"
+    },
+    {
+      "source_id": "SIM-B",
+      "model": "教学车型 B",
+      "trim": "长途版",
+      "year": 2026,
+      "source_date": "2026-11-07",
+      "accessed_on": "2026-11-09",
+      "data_kind": "teaching_simulation",
+      "source_url": "https://github.com/impureWine/LLM-Evaluation/blob/7d6e7c214459488d5310a2390cd9f0abbae3dd70/configs/evaluation-v1.json",
+      "source_locator": "vehicle_data[source_id=SIM-B]",
+      "covers_fields": [
+        "source_id",
+        "model",
+        "trim",
+        "year",
+        "price_wan",
+        "energy",
+        "seats",
+        "adas"
+      ],
+      "note": "全部参数为项目教学设定；没有对应厂商配置页；本次核对没有改动参数。"
+    },
+    {
+      "source_id": "SIM-C",
+      "model": "教学车型 C",
+      "trim": "家庭版",
+      "year": 2026,
+      "source_date": "2026-11-07",
+      "accessed_on": "2026-11-09",
+      "data_kind": "teaching_simulation",
+      "source_url": "https://github.com/impureWine/LLM-Evaluation/blob/7d6e7c214459488d5310a2390cd9f0abbae3dd70/configs/evaluation-v1.json",
+      "source_locator": "vehicle_data[source_id=SIM-C]",
+      "covers_fields": [
+        "source_id",
+        "model",
+        "trim",
+        "year",
+        "price_wan",
+        "energy",
+        "seats",
+        "adas"
+      ],
+      "note": "全部参数为项目教学设定；没有对应厂商配置页；本次核对没有改动参数。"
+    },
+    {
+      "source_id": "SIM-D",
+      "model": "教学车型 D",
+      "trim": "家庭基础版",
+      "year": 2026,
+      "source_date": "2026-11-07",
+      "accessed_on": "2026-11-09",
+      "data_kind": "teaching_simulation",
+      "source_url": "https://github.com/impureWine/LLM-Evaluation/blob/7d6e7c214459488d5310a2390cd9f0abbae3dd70/configs/evaluation-v1.json",
+      "source_locator": "vehicle_data[source_id=SIM-D]",
+      "covers_fields": [
+        "source_id",
+        "model",
+        "trim",
+        "year",
+        "price_wan",
+        "energy",
+        "seats",
+        "adas"
+      ],
+      "note": "全部参数为项目教学设定；没有对应厂商配置页；本次核对没有改动参数。"
+    },
+    {
+      "source_id": "SIM-E",
+      "model": "教学车型 E",
+      "trim": "智驾版",
+      "year": 2026,
+      "source_date": "2026-11-07",
+      "accessed_on": "2026-11-09",
+      "data_kind": "teaching_simulation",
+      "source_url": "https://github.com/impureWine/LLM-Evaluation/blob/7d6e7c214459488d5310a2390cd9f0abbae3dd70/configs/evaluation-v1.json",
+      "source_locator": "vehicle_data[source_id=SIM-E]",
+      "covers_fields": [
+        "source_id",
+        "model",
+        "trim",
+        "year",
+        "price_wan",
+        "energy",
+        "seats",
+        "adas"
+      ],
+      "note": "全部参数为项目教学设定；没有对应厂商配置页；本次核对没有改动参数。"
+    }
+  ]
+}

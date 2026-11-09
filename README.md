@@ -90,3 +90,23 @@ JSON 模式、Schema 校验和纠正重试链路，不计入正式实验。
 ## 四轮评测联调
 
 使用 `python -m llm_eval.evaluate --dry-run` 查看模型、场景、指纹和计划任务数。实际联调、实验冻结与评分参见[评测协议 v1](docs/evaluation-protocol-v1.md)。
+
+## 庄剀涵交付材料
+
+- [任务交付与复现索引](docs/zhuang-kaihan-delivery.md)
+- [车型数据、来源口径、三场景与需求变更脚本](docs/zhuang-kaihan-data-and-scenarios.md)
+- [市场概况、用户分析与商业模式](docs/zhuang-kaihan-market-and-business.md)
+- [车型来源与字段字典](data/vehicle-sources-v1.json)、[逐轮约束与脚本](configs/scenario-rules-v1.json)
+- [逐轮参考集合与排除原因](data/reference-answers-v1.json)、[输入版本指纹](data/release-v1.json)
+- [市场来源表](data/market-sources-v1.json)、[来源核验摘录](evidence/market-source-excerpts-2026-11-09.md)
+
+沿用原 `configs/evaluation-v1.json` 的五款教学模拟车型及三个场景，参数与运行消息保持兼容。
+在正式运行前增加零 API 调用的数据校验：
+
+```powershell
+$env:PYTHONPATH = 'src'
+python -m llm_eval.dataset
+```
+
+该命令核对来源、参考集合、约束变更、脚本与运行器一致性、答案隔离及输入指纹。
+材料状态是“供团队冻结审核”，不是正式模型运行或团队审批的完成记录。

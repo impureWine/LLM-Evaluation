@@ -1,0 +1,39 @@
+test_default_registry_has_two_distinct_models (test_config.ModelRegistryTests.test_default_registry_has_two_distinct_models) ... ok
+test_public_registry_contains_no_credential (test_config.ModelRegistryTests.test_public_registry_contains_no_credential) ... ok
+test_registry_rejects_embedded_like_secret (test_config.ModelRegistryTests.test_registry_rejects_embedded_like_secret) ... ok
+test_shared_generation_parameters_are_applied (test_config.ModelRegistryTests.test_shared_generation_parameters_are_applied) ... ok
+test_added_energy_retains_seven_seats (test_dataset.DatasetTests.test_added_energy_retains_seven_seats) ... ok
+test_budget_is_inclusive_without_rounding_over_budget (test_dataset.DatasetTests.test_budget_is_inclusive_without_rounding_over_budget) ... ok
+test_budget_replaced_from_turn_two_only (test_dataset.DatasetTests.test_budget_replaced_from_turn_two_only) ... ok
+test_duplicate_rule_is_rejected (test_dataset.DatasetTests.test_duplicate_rule_is_rejected) ... ok
+test_energy_does_not_equate_phev_and_bev (test_dataset.DatasetTests.test_energy_does_not_equate_phev_and_bev) ... ok
+test_invalid_replacement_is_rejected (test_dataset.DatasetTests.test_invalid_replacement_is_rejected) ... ok
+test_release_fingerprints_match (test_dataset.DatasetTests.test_release_fingerprints_match) ... ok
+test_repository_sources_scripts_and_reference_isolation (test_dataset.DatasetTests.test_repository_sources_scripts_and_reference_isolation) ... ok
+test_source_and_script_drift_are_detected (test_dataset.DatasetTests.test_source_and_script_drift_are_detected) ... ok
+test_wrong_embedded_reference_is_rejected (test_dataset.DatasetTests.test_wrong_embedded_reference_is_rejected) ... ok
+test_existing_process_value_wins (test_env.LocalEnvironmentTests.test_existing_process_value_wins) ... ok
+test_loads_project_specific_variable (test_env.LocalEnvironmentTests.test_loads_project_specific_variable) ... ok
+test_does_not_retry_client_error (test_openai_compatible.OpenAICompatibleClientTests.test_does_not_retry_client_error) ... ok
+test_missing_key_is_reported_without_request (test_openai_compatible.OpenAICompatibleClientTests.test_missing_key_is_reported_without_request) ... ok
+test_posts_context_and_returns_usage (test_openai_compatible.OpenAICompatibleClientTests.test_posts_context_and_returns_usage) ... ok
+test_retries_server_error_then_succeeds (test_openai_compatible.OpenAICompatibleClientTests.test_retries_server_error_then_succeeds) ... ok
+test_bundle_rejects_invalid_schema (test_prompts.PromptBundleTests.test_bundle_rejects_invalid_schema) ... ok
+test_fingerprint_is_stable_for_same_files (test_prompts.PromptBundleTests.test_fingerprint_is_stable_for_same_files) ... ok
+test_followup_preserves_turn_and_user_change (test_prompts.PromptBundleTests.test_followup_preserves_turn_and_user_change) ... ok
+test_initial_messages_contain_shared_schema_and_data (test_prompts.PromptBundleTests.test_initial_messages_contain_shared_schema_and_data) ... ok
+test_template_rejects_missing_values (test_prompts.PromptBundleTests.test_template_rejects_missing_values) ... ok
+test_accepts_valid_decision (test_schema.SchemaValidationTests.test_accepts_valid_decision) ... ok
+test_parses_json_and_reports_missing_field (test_schema.SchemaValidationTests.test_parses_json_and_reports_missing_field) ... ok
+test_rejects_final_and_question_together (test_schema.SchemaValidationTests.test_rejects_final_and_question_together) ... ok
+test_rejects_markdown_fenced_json (test_schema.SchemaValidationTests.test_rejects_markdown_fenced_json) ... ok
+test_rejects_unverifiable_candidate (test_schema.SchemaValidationTests.test_rejects_unverifiable_candidate) ... ok
+test_smoke_case_renders_for_all_registered_models (test_smoke.SmokeAssetTests.test_smoke_case_renders_for_all_registered_models) ... ok
+test_accepts_valid_output_without_correction (test_structured.StructuredDecisionTests.test_accepts_valid_output_without_correction) ... ok
+test_one_correction_is_added_after_invalid_output (test_structured.StructuredDecisionTests.test_one_correction_is_added_after_invalid_output) ... ok
+test_returns_invalid_after_correction_budget (test_structured.StructuredDecisionTests.test_returns_invalid_after_correction_budget) ... ok
+
+----------------------------------------------------------------------
+Ran 34 tests in 0.329s
+
+OK

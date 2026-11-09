@@ -1,0 +1,135 @@
+{
+  "version": "market-sources-v1",
+  "maintainer": "庄剀涵（102400435）",
+  "access_timezone": "Asia/Shanghai",
+  "prepared_on": "2026-11-09",
+  "sources": [
+    {
+      "id": "R0",
+      "title": "软件工程实践——大模型评测作业",
+      "publisher": "CSDN课程社区／助教李烨",
+      "url": "https://bbs.csdn.net/topics/620578230",
+      "published_on": "2026-11-06",
+      "kind": "assignment_requirement",
+      "excerpts": [
+        "也可采用明确标注的教学模拟数据，但不得将其称为真实市场数据。"
+      ],
+      "accessed_on": "2026-11-09",
+      "raw_html_sha256": "ae46e3913daf5c00b364455e82981e5bda7e7c42e9cc145c4a33276c2a0dea9b",
+      "verification": "已实际读取网页正文并核对以下短摘录；未购买完整市场报告。"
+    },
+    {
+      "id": "M1",
+      "title": "Large Language Models Market (2026 - 2033)",
+      "publisher": "Grand View Research",
+      "url": "https://www.grandviewresearch.com/industry-analysis/large-language-model-llm-market-report",
+      "published_on": null,
+      "kind": "commercial_research_estimate_and_forecast",
+      "period": "2025估算；2026估算；2026—2033预测",
+      "scope": "全球LLM整体市场，含云及本地部署；不是纯API收入，也不是中国市场。",
+      "excerpts": [
+        "The global large language models market size was valued at USD 7.4 billion in 2025 and is projected to grow from USD 9.8 billion in 2026 to USD 95.6 billion by 2033, at a CAGR of 38.5% from 2026 to 2033."
+      ],
+      "accessed_on": "2026-11-09",
+      "raw_html_sha256": "85ac5390ab38f605b0a3f5d957dbe2a0b28ef75709a12a6d56197582a3881cb9",
+      "verification": "已实际读取网页正文并核对以下短摘录；未购买完整市场报告。",
+      "date_note": "正文未明确标注发布日期；访问日期不等于发布日期。"
+    },
+    {
+      "id": "M2",
+      "title": "AI Agents Market (2026 - 2033)",
+      "publisher": "Grand View Research",
+      "url": "https://www.grandviewresearch.com/industry-analysis/ai-agents-market-report",
+      "published_on": null,
+      "kind": "commercial_research_estimate_and_forecast",
+      "period": "2025估算；2026估算；2026—2033预测",
+      "scope": "全球跨行业AI Agent市场，含企业及工业等应用；不是购车助手收入。",
+      "excerpts": [
+        "The global AI agents market size was valued at USD 7.6 billion in 2025 and is projected to grow from USD 10.9 billion in 2026 to USD 182.9 billion by 2033, at a CAGR of 49.6% from 2026 to 2033."
+      ],
+      "accessed_on": "2026-11-09",
+      "raw_html_sha256": "7b835a153cd9409088c9bb98ffa1930d90252e016c9679b950db18d98fd57270",
+      "verification": "已实际读取网页正文并核对以下短摘录；未购买完整市场报告。",
+      "date_note": "正文未明确标注发布日期；访问日期不等于发布日期。"
+    },
+    {
+      "id": "M3",
+      "title": "第57次《中国互联网络发展状况统计报告》发布说明",
+      "publisher": "中国互联网络信息中心（CNNIC）",
+      "url": "https://www.cnnic.net.cn/n4/2026/0304/c88-11549.html",
+      "published_on": "2026-02-05",
+      "kind": "official_statistical_report",
+      "period": "2025年12月；企业数量为发布说明引用的当时数据",
+      "scope": "中国网民、生成式AI用户及中小企业；非某个模型付费用户。URL路径日期不替代正文发布日期。",
+      "excerpts": [
+        "截至2025年12月，我国网民规模达11.25亿人，互联网普及率突破80%",
+        "截至2025年12月，生成式人工智能用户规模达6.02亿人，较2024年底增长141.7%；普及率达42.8%，大幅提高25.2个百分点。",
+        "目前，我国中小企业数量超6000万家"
+      ],
+      "accessed_on": "2026-11-09",
+      "raw_html_sha256": "4a47fcac277ee6dae693f74befe8674f98324291f28b4578a952770febf4b089",
+      "verification": "已实际读取网页正文并核对以下短摘录；未购买完整市场报告。"
+    },
+    {
+      "id": "M4",
+      "title": "《生成式人工智能应用发展报告（2026）》发布说明",
+      "publisher": "中国互联网络信息中心（CNNIC）",
+      "url": "https://www.cnnic.net.cn/n4/2026/1008/c88-11704.html",
+      "published_on": "2026-10-08",
+      "report_released_on": "2026-09-29",
+      "kind": "official_statistical_report",
+      "period": "截至2026年上半年",
+      "scope": "中国生成式AI用户；76.0%分母为报告调查的生成式AI用户，不是购车用户。",
+      "excerpts": [
+        "截至2026年上半年，我国生成式人工智能用户规模突破7亿人，普及率超50%。",
+        "76.0%的用户表示自己会让生成式人工智能回答问题；"
+      ],
+      "accessed_on": "2026-11-09",
+      "raw_html_sha256": "481dccf16c57619b7464f44ecaac60ef87cc262ddfcbe3931a57ad15ce7ba51d",
+      "verification": "已实际读取网页正文并核对以下短摘录；未购买完整市场报告。"
+    },
+    {
+      "id": "B1",
+      "title": "API 定价",
+      "publisher": "智谱AI开放文档",
+      "url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "published_on": null,
+      "kind": "vendor_live_price_document",
+      "period": "2026-11-09访问时页面，后续可能调整",
+      "scope": "人民币元/百万tokens；输入、输出、缓存分别计价；不证明账号有可用额度。",
+      "excerpts": [
+        "模型推理采用按量计费模式，根据实际使用量扣费，便于灵活控制业务成本。",
+        "调用费用 = 未命中缓存的输入费用 + 缓存命中费用 + 输出费用 + 缓存存储费用",
+        "GLM-4.7\n输入 [0, 32K)，输出 ≥0.2K\n3\n14\n限时免费\n0.6",
+        "GLM-4.7-Flash\n200K\n免费\n免费\n限时免费\n免费"
+      ],
+      "accessed_on": "2026-11-09",
+      "raw_html_sha256": "bc708fc1201eb35a8dc91c68eb949344ba02afb077231f4709d874c7a7573875",
+      "verification": "已实际读取网页正文并核对以下短摘录；未购买完整市场报告。",
+      "date_note": "正文未明确标注发布日期；访问日期不等于发布日期。"
+    },
+    {
+      "id": "B2",
+      "title": "平台介绍",
+      "publisher": "智谱AI开放文档",
+      "url": "https://docs.bigmodel.cn/cn/guide/start/introduction",
+      "published_on": null,
+      "kind": "vendor_product_document",
+      "period": "2026-11-09访问时页面",
+      "scope": "平台公开功能介绍；不当作独立性能测试或客户数统计。",
+      "excerpts": [
+        "提供功能丰富、灵活易用、高性价比的大模型 API 服务，支持模型精调、推理等",
+        "上传文档、图片或音视频等文件，构建可用于问答和检索增强的知识库。"
+      ],
+      "accessed_on": "2026-11-09",
+      "raw_html_sha256": "3090bacabb316aebb2f1c51a41a2fa00852cf7a35a18e21251ee26bfff9e5bcf",
+      "verification": "已实际读取网页正文并核对以下短摘录；未购买完整市场报告。",
+      "date_note": "正文未明确标注发布日期；访问日期不等于发布日期。"
+    }
+  ],
+  "limitations": [
+    "没有取得可独立拆分的纯大模型API收入规模，LLM整体市场仅作相邻市场参照。",
+    "没有取得去重后的GLM开发者总数、付费企业客户数或本项目购车助手真实用户数。",
+    "市场研究报告数字为机构估算或预测，不能与官方用户调查或不同市场规模简单相加。"
+  ]
+}
