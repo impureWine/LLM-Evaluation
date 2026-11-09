@@ -16,7 +16,7 @@
 | 1 | `python -m llm_eval.run_report --runs-dir runs` | `local/run-report/run_inventory.csv`、`execution_summary.json`（不入库） | 18 条是否齐全；`usage_complete` 是否有 false |
 | 2 | `python -m llm_eval.scoring --runs runs/<批次>` | `runs/<批次>/scores/` 下 `scores.csv`、`summary.csv`、`summary.md`、`review-queue.csv` | `pending_points` 是否为 0；不为 0 则进第 3 步 |
 | 3 | 打开 `review-queue.csv`，在 `verdict` 列填 `pass` 或 `fail`，再执行 `python -m llm_eval.scoring --runs runs/<批次> --review runs/<批次>/scores/review-queue.csv` | 重算后的同一批文件 | `blocking` 行必须全部有结论；`override` 行不改也可以 |
-| 4 | 把 `summary.csv` 交给程杰出图 | 图表 | 图表数字与 `scores.csv` 逐格一致 |
+| 4 | `python -m llm_eval.report --scores runs/<批次>/scores/report-scores.csv`（或把 `summary.csv` 交程杰） | `evidence/results/` 下三类提取表、汇总表与 SVG 图 | 图表数字与 `scores.csv` 逐格一致；`report-scores.csv` 中留空的运行不应出现在评分图里 |
 | 5 | 按第 2 节回填文档 | 博客、案例、协调文档 | 三处数字一致（博客表 / `summary.md` / 图表） |
 
 评分表要公开的话，把 `scores.csv`、`summary.md` 复制到 `evidence/` 或 `docs/`；**原始 run 记录不直接公开**（含完整模型响应与响应 ID），需要时先脱敏。
@@ -32,7 +32,7 @@
 | 5 | 同上 第 131 行“局限与待回填” | “没有一个判断依赖正式 18 次结果” | 若引用正式结果，逐句标注来源批次数 | `summary.csv` | 关欣 |
 | 6 | 同上 §1.5 延迟段 | 只有冒烟样本 89.282 s | 可补正式批次的平均任务耗时与单轮响应时间，并注明样本数 | `summary.csv` | 关欣 |
 | 7 | [`evaluation-coordination.md`](evaluation-coordination.md) 第 13 行 | “正式规则与分析待汇入” | 改为“评分规则与案例已入库，评分表见 …” | 提交记录 | 张王昊 |
-| 8 | [`desensitization-check.md`](desensitization-check.md) §6 基线 | `main` @ `bba9158` | 发布前复检时更新为当时的 `main` 哈希 | `git rev-parse main` | 关欣 |
+| 8 | [`desensitization-check.md`](desensitization-check.md) §5 基线 | `main` @ `f81fce3` | 发布前复检时更新为当时的 `main` 哈希 | `git rev-parse main` | 关欣 |
 | 9 | `README.md` 关欣段 | 只有规则、案例、分析、脱敏 | 若评分表入库，补一行链接 | `docs/` 或 `evidence/` | 关欣 |
 | 10 | 案例目录 | 只有 C1、C2 | **不改写 C1/C2**；正式批次出现新失败时新增 C3 | `scores.csv` 的 `failed_checks` | 关欣 |
 
@@ -70,7 +70,7 @@ fail 项的原因代码在 `scores.csv` 的 `failed_checks` 列，格式为 `维
 ## 6. 发布前 15 分钟复检
 
 1. `python -m llm_eval.dataset` 返回 `valid: true`（指纹未被改动）。
-2. `python -m unittest discover -s tests` 全绿（当前 58 项）。
+2. `python -m unittest discover -s tests` 全绿（当前 72 项）。
 3. 重跑[脱敏检查](desensitization-check.md)第 2 节的命令，确认无新增命中。
 4. **CSDN 链接替换**：博客里的相对链接（`docs/xxx.md`、`../evidence/xxx.json`）在 CSDN 点不开，须改成
    `https://github.com/impureWine/LLM-Evaluation/blob/main/<路径>`。
