@@ -70,7 +70,7 @@ fail 项的原因代码在 `scores.csv` 的 `failed_checks` 列，格式为 `维
 ## 6. 发布前 15 分钟复检
 
 1. `python -m llm_eval.dataset` 返回 `valid: true`（指纹未被改动）。
-2. `python -m unittest discover -s tests` 全绿（当前 72 项）。
+2. `python -m unittest discover -s tests` 全绿（2026-11-10 本地验证 73 项）。
 3. 重跑[脱敏检查](desensitization-check.md)第 2 节的命令，确认无新增命中。
 4. **CSDN 链接替换**：博客里的相对链接（`docs/xxx.md`、`../evidence/xxx.json`）在 CSDN 点不开，须改成
    `https://github.com/impureWine/LLM-Evaluation/blob/main/<路径>`。

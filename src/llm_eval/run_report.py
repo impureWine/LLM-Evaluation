@@ -1,6 +1,6 @@
 """Inventory evaluation runs and summarize observable execution metrics.
 
-This module never equates a structurally completed conversation with a successful
+This module never equates a completed output contract with a successful
 car recommendation. Quality scores and task success require the frozen rubric.
 """
 
@@ -14,7 +14,7 @@ from pathlib import Path
 
 FIELDS = (
     "batch", "run_id", "batch_kind", "model", "scenario", "repetition",
-    "started_at", "completed", "turns_recorded", "error_type", "elapsed_ms",
+    "started_at", "output_contract_completed", "turns_recorded", "error_type", "elapsed_ms",
     "response_latency_ms", "latency_turns", "prompt_tokens", "completion_tokens", "total_tokens",
     "usage_complete", "source_file",
 )
@@ -48,11 +48,15 @@ def read_runs(runs_dir, batch_kind="evaluation_candidate", batch=None):
             isinstance(value, dict) and
             all(isinstance(value.get(k), int)
                 for k in ("prompt_tokens", "completion_tokens", "total_tokens")) and
-            value["total_tokens"] > 0
+            (value.get("reported") is True if "reported" in value
+             else value["total_tokens"] > 0)
             for value in usages
         )
         first_error = next((turn.get("error_type") or "invalid_output" for turn in turns
                             if not turn.get("valid")), "")
+        if not first_error:
+            first_error = next(("comparison_audit_failed" for turn in turns
+                                if turn.get("comparison_audit", {}).get("passed") is False), "")
         measured_turns = [turn for turn in turns
                           if isinstance(turn.get("total_latency_ms"), int)]
         row = {
@@ -63,7 +67,9 @@ def read_runs(runs_dir, batch_kind="evaluation_candidate", batch=None):
             "scenario": data.get("scenario_id", ""),
             "repetition": data.get("repetition", ""),
             "started_at": data.get("started_at", ""),
-            "completed": bool(data.get("completed")) and len(turns) == 4,
+            "output_contract_completed": bool(data.get(
+                "output_contract_completed", data.get("completed", False)
+            )) and len(turns) == 4,
             "turns_recorded": len(turns),
             "error_type": first_error,
             "elapsed_ms": data.get("elapsed_ms", ""),
@@ -99,8 +105,9 @@ def summarize(rows):
             "model": model,
             "scenario": scenario,
             "started_tasks": len(items),
-            "structure_completed": sum(r["completed"] for r in items),
-            "structure_completion_rate": round(sum(r["completed"] for r in items) / len(items), 4),
+            "output_contract_completed": sum(r["output_contract_completed"] for r in items),
+            "output_contract_completion_rate": round(
+                sum(r["output_contract_completed"] for r in items) / len(items), 4),
             "elapsed_samples": len(elapsed),
             "mean_task_seconds": round(statistics.mean(elapsed), 3) if elapsed else None,
             "task_seconds_range": round(max(elapsed) - min(elapsed), 3) if elapsed else None,

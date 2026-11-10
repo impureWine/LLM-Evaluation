@@ -19,7 +19,7 @@ class RunReportTests(unittest.TestCase):
             turns[-1] = {"turn": 2, "valid": False, "error_type": "TimeoutError"}
         record = {"run_id": name, "batch_kind": kind, "requested_model": "glm-test",
                   "scenario_id": "city", "repetition": 1, "started_at": "2026-11-08T00:00:00Z",
-                  "completed": complete, "elapsed_ms": 1200, "turns": turns,
+                  "output_contract_completed": complete, "elapsed_ms": 1200, "turns": turns,
                   "manifest_sha256": fingerprint, "prompt_sha256": "p", "scoring_sha256": "s"}
         (folder / (name + ".json")).write_text(json.dumps(record), encoding="utf-8")
 
@@ -32,7 +32,7 @@ class RunReportTests(unittest.TestCase):
             rows = read_runs(root)
             summary = summarize(rows)[0]
             self.assertEqual(summary["started_tasks"], 2)
-            self.assertEqual(summary["structure_completed"], 1)
+            self.assertEqual(summary["output_contract_completed"], 1)
             self.assertEqual(summary["token_samples"], 1)
             self.assertEqual(summary["mean_total_tokens"], 60)
             self.assertEqual(summary["latency_turns"], 5)
@@ -51,6 +51,22 @@ class RunReportTests(unittest.TestCase):
     def test_absent_run_directory_is_empty(self):
         with tempfile.TemporaryDirectory() as temp:
             self.assertEqual(read_runs(Path(temp) / "missing"), [])
+
+    def test_new_usage_flag_and_comparison_audit(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            self.make_run(root, "batch", "one")
+            path = root / "batch" / "one.json"
+            record = json.loads(path.read_text(encoding="utf-8"))
+            for turn in record["turns"]:
+                turn["total_usage"]["reported"] = True
+            record["turns"][2]["comparison_audit"] = {"passed": False}
+            record["output_contract_completed"] = False
+            path.write_text(json.dumps(record), encoding="utf-8")
+            row = read_runs(root)[0]
+            self.assertFalse(row["output_contract_completed"])
+            self.assertEqual(row["error_type"], "comparison_audit_failed")
+            self.assertTrue(row["usage_complete"])
 
 
 if __name__ == "__main__":

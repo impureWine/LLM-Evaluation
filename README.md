@@ -151,3 +151,11 @@ python -m llm_eval.scoring --runs runs/<批次> --review runs/<批次>/scores/re
 `report-scores.csv` 的列与 `python -m llm_eval.report --scores` 的约定一致，可直接出图；
 含未决复核项的运行留空分数，避免半成品进入图表。
 评分细则、评分实现与参照数据须同批冻结，改动按协议第 10 节升版本并重算指纹。
+
+## 曾俊涛交付材料
+
+- [18 次运行计划](docs/zengjuntao-run-plan.csv)与[执行、复现说明](docs/zengjuntao-execution-and-reproduction.md)
+- [运行清单和执行指标脚本](src/llm_eval/run_report.py)、[材料索引](docs/zengjuntao-material-index.md)
+- [量化对比待回填段落](docs/zengjuntao-blog-section.md)、[离线预检记录](evidence/zengjuntao-preflight-2026-11-10.md)
+
+`run_report` 仅统计输出契约完成率、延迟和可核验 token；正式任务成功率以冻结评分规则和人工复核结果为准。
