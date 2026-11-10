@@ -86,7 +86,13 @@ JSON 模式、Schema 校验和纠正重试链路，不计入正式实验。
 
 - [分工进度、验收清单与提交记录](docs/evaluation-coordination.md)
 - [博客整合稿、开发时间估计与模型选型建议](docs/evaluation-blog.md)
-- [程杰结果提取与图表说明](docs/results-report.md)
+
+## 程杰交付材料
+
+- [结果提取、图表与待办清单](docs/results-report.md)
+- [结果提取程序](src/llm_eval/report.py)
+
+提取程序和固定车型事实核验已完成；正式批次实测表图及纠正原因分类统计仍待补齐，详见交付清单。
 
 ## 郭昱祺交付材料
 
